@@ -41,4 +41,4 @@ Goal: any file can be opened, understood, and fixed by hand without tooling.
 
 - Remote: https://github.com/sako4018/basic-algorithms, branch `master`.
 - Small commits, one step each; do not push without the user's explicit approval.
-- Several agents may work at the same time. Each agent works in its own git worktree on its own branch (e.g. `stage1-player`), never directly on `master`, and pushes only that branch. Branches are merged into `master` one at a time by the coordinating session after checking that the app still runs. Agents only edit the files assigned to them, so merges don't conflict.
+- Several agents may work at the same time. Each agent works in its own git worktree on its own branch (e.g. `stage1-player`), never directly on `master`, and commits + pushes only that branch using the `/safe-commit-and-push` skill. Branches are merged into `master` one at a time by the coordinating session after checking that the app still runs. Agents only edit the files assigned to them, so merges don't conflict.
