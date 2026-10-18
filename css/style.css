@@ -440,6 +440,20 @@ input:focus-visible {
   color: var(--text-faint);
 }
 
+/* Keyboard hint only makes sense where there is a mouse/keyboard. */
+@media (hover: none) {
+  .hint {
+    display: none;
+  }
+}
+
+/* "Reduce motion" in system settings: bars jump instead of sliding. */
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    transition: background-color 0.25s;
+  }
+}
+
 /* ---------- Narrow screens (tablet portrait, phone) ---------- */
 
 @media (max-width: 800px) {

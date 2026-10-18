@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Алгоритми стъпка по стъпка</title>
   <link rel="stylesheet" href="css/style.css">
+  <script>
+    // Applies a saved light theme before the first paint, so it doesn't
+    // flash black first. main.js handles the theme button.
+    try {
+      if (localStorage.getItem("theme") === "light") {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    } catch (error) {
+      // Storage can be blocked (private mode); then the page stays black.
+    }
+  </script>
 </head>
 <body>
   <header class="top-bar">
@@ -42,7 +53,8 @@
             <button id="play-button" class="text-button" type="button">▶ Пусни</button>
             <button id="random-button" class="text-button" type="button">Нов масив</button>
             <label class="speed-label" for="speed">Скорост на размяната
-              <input id="speed" type="range" min="300" max="2500" step="100" value="800">
+              <!-- Right = faster. Swap takes min + max - value ms, so 2000 = 0.8 s. -->
+              <input id="speed" type="range" min="300" max="2500" step="100" value="2000">
             </label>
           </div>
           <p class="hint">Space или → напред, ← назад</p>

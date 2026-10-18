@@ -12,7 +12,6 @@ const BAR_GAP_FRACTION = 0.25;
 const PAUSE_AFTER_ANIMATION_MS = 600;
 
 let playerLesson = null;
-let playerArray = [];
 let playerSteps = [];
 let playerStepIndex = 0;
 let playerTimer = null;
@@ -38,7 +37,6 @@ function closeLesson() {
 
 function useArray(values) {
   stopPlayback();
-  playerArray = values;
   playerSteps = playerLesson.buildSteps(values);
   createBars(values);
   showStep(0);
@@ -72,11 +70,14 @@ function createBars(values) {
   barsContainer.innerHTML = "";
   barItems = [];
   const maxValue = Math.max.apply(null, values);
+  const slotPercent = 100 / values.length;
+  const barWidthPercent = slotPercent * (1 - BAR_GAP_FRACTION);
 
   for (let index = 0; index < values.length; index++) {
     const bar = document.createElement("div");
     bar.className = "bar";
     bar.style.height = barHeightPercent(values[index], maxValue) + "%";
+    bar.style.width = barWidthPercent + "%";
 
     const label = document.createElement("span");
     label.className = "bar-label";
@@ -89,15 +90,18 @@ function createBars(values) {
 }
 
 function renderBars(step) {
-  placeBars(step.bars);
-  const slotPercent = 100 / step.bars.length;
+  // A step whose numbers aren't the same set as the bars (a lesson that
+  // changes values) can't be animated as moves, so the bars are redrawn.
+  if (!placeBars(step.bars)) {
+    createBars(step.bars);
+  }
+  const slotPercent = 100 / barItems.length;
   const gapPercent = slotPercent * BAR_GAP_FRACTION;
 
   for (const item of barItems) {
     const index = item.position;
     const bar = item.element;
     bar.style.left = index * slotPercent + gapPercent / 2 + "%";
-    bar.style.width = slotPercent - gapPercent + "%";
 
     bar.classList.toggle("highlight", step.highlight.includes(index));
     bar.classList.toggle("swapped", step.swapped && step.highlight.includes(index));
@@ -105,30 +109,54 @@ function renderBars(step) {
   }
 }
 
-// Gives every bar element its position in this step. A bar keeps its old
-// position if the same number is still there, so with repeated numbers only
-// the bars that really moved get animated.
+// Gives every bar element its position in this step and returns true, or
+// returns false (changing nothing) if the numbers don't match the bars.
+// Bars whose number is still in the same place stay put; the rest go to the
+// nearest free place with their number. So with repeated numbers only the
+// bars that really moved get animated.
 function placeBars(values) {
-  const unplaced = barItems.slice();
-  const newPositions = [];
+  if (values.length !== barItems.length) {
+    return false;
+  }
+  const newPositions = new Map();
+  const freeIndexes = [];
 
   for (let index = 0; index < values.length; index++) {
-    let chosen = -1;
-    for (let k = 0; k < unplaced.length; k++) {
-      if (unplaced[k].value !== values[index]) {
-        continue;
-      }
-      if (chosen === -1 || unplaced[k].position === index) {
-        chosen = k;
-      }
+    const stayingBar = barItems.find(function (item) {
+      return item.position === index && item.value === values[index];
+    });
+    if (stayingBar) {
+      newPositions.set(stayingBar, index);
+    } else {
+      freeIndexes.push(index);
     }
-    newPositions.push({ item: unplaced[chosen], position: index });
-    unplaced.splice(chosen, 1);
   }
 
-  for (const entry of newPositions) {
-    entry.item.position = entry.position;
+  for (const index of freeIndexes) {
+    const bar = nearestUnplacedBar(values[index], index, newPositions);
+    if (!bar) {
+      return false;
+    }
+    newPositions.set(bar, index);
   }
+
+  newPositions.forEach(function (index, item) {
+    item.position = index;
+  });
+  return true;
+}
+
+function nearestUnplacedBar(value, index, newPositions) {
+  let best = null;
+  for (const item of barItems) {
+    if (item.value !== value || newPositions.has(item)) {
+      continue;
+    }
+    if (best === null || Math.abs(item.position - index) < Math.abs(best.position - index)) {
+      best = item;
+    }
+  }
+  return best;
 }
 
 function barHeightPercent(value, maxValue) {
@@ -243,8 +271,11 @@ function playNextStep() {
   }
 }
 
+// The slider goes from slow (left) to fast (right), so a bigger value means
+// a shorter animation: min + max - value turns it into milliseconds.
 function swapDurationMs() {
-  return Number(document.getElementById("speed").value);
+  const speedSlider = document.getElementById("speed");
+  return Number(speedSlider.min) + Number(speedSlider.max) - Number(speedSlider.value);
 }
 
 function currentDelayMs() {
@@ -301,7 +332,8 @@ function wirePlayerControls() {
 }
 
 function handlePlayerKeys(event) {
-  if (!isLessonScreenVisible()) {
+  // Arrow keys on a focused slider should move the slider, not the lesson.
+  if (!isLessonScreenVisible() || event.target.tagName === "INPUT") {
     return;
   }
 
