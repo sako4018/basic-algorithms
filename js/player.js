@@ -1,17 +1,15 @@
 // Shared lesson player.
 // A lesson only produces a list of steps; this file draws one step at a time
-// and handles play / pause / step / speed and the custom array input.
+// and handles step forward / back, optional play / pause and the swap speed.
 
 const RANDOM_ARRAY_LENGTH = 8;
 const RANDOM_MIN_VALUE = 5;
 const RANDOM_MAX_VALUE = 99;
-const INPUT_MIN_LENGTH = 5;
-const INPUT_MAX_LENGTH = 12;
-const INPUT_MIN_VALUE = 1;
-const INPUT_MAX_VALUE = 99;
 const MIN_BAR_HEIGHT_PERCENT = 8;
-const SLOWEST_DELAY_MS = 1500;
-const FASTEST_DELAY_MS = 100;
+// Part of each bar's slot left empty as the gap between bars.
+const BAR_GAP_FRACTION = 0.25;
+// While playing, wait this long after a swap animation before the next step.
+const PAUSE_AFTER_ANIMATION_MS = 600;
 
 let playerLesson = null;
 let playerArray = [];
@@ -19,6 +17,9 @@ let playerSteps = [];
 let playerStepIndex = 0;
 let playerTimer = null;
 let playerControlsWired = false;
+// One element per number. They stay the same between steps, so a swap
+// moves the two real bars instead of redrawing them.
+let barItems = [];
 
 // ---------- Opening and closing a lesson ----------
 
@@ -26,8 +27,6 @@ function openLesson(lesson) {
   stopPlayback();
   playerLesson = lesson;
   document.getElementById("lesson-title").textContent = lesson.title;
-  document.getElementById("lesson-intro").textContent = lesson.intro;
-  document.getElementById("input-error").textContent = "";
   renderCode(lesson.code);
   wirePlayerControls();
   useArray(makeRandomArray());
@@ -40,8 +39,8 @@ function closeLesson() {
 function useArray(values) {
   stopPlayback();
   playerArray = values;
-  document.getElementById("array-input").value = values.join(", ");
   playerSteps = playerLesson.buildSteps(values);
+  createBars(values);
   showStep(0);
 }
 
@@ -63,35 +62,72 @@ function showStep(stepIndex) {
   renderActiveCodeLines(step.lines);
   renderVariables(step.vars);
   document.getElementById("step-text").textContent = step.text;
-  document.getElementById("compare-count").textContent = step.compares;
-  document.getElementById("swap-count").textContent = step.swaps;
   document.getElementById("step-counter").textContent =
-    "Стъпка " + (stepIndex + 1) + " от " + playerSteps.length;
+    (stepIndex + 1) + " / " + playerSteps.length;
   updateButtons();
 }
 
-function renderBars(step) {
+function createBars(values) {
   const barsContainer = document.getElementById("bars");
   barsContainer.innerHTML = "";
-  const maxValue = Math.max.apply(null, step.bars);
+  barItems = [];
+  const maxValue = Math.max.apply(null, values);
 
-  for (let index = 0; index < step.bars.length; index++) {
-    const value = step.bars[index];
+  for (let index = 0; index < values.length; index++) {
     const bar = document.createElement("div");
     bar.className = "bar";
-    bar.style.height = barHeightPercent(value, maxValue) + "%";
-    bar.textContent = value;
+    bar.style.height = barHeightPercent(values[index], maxValue) + "%";
 
-    if (step.highlight.includes(index)) {
-      bar.classList.add("highlight");
-      if (step.swapped) {
-        bar.classList.add("swapped");
+    const label = document.createElement("span");
+    label.className = "bar-label";
+    label.textContent = values[index];
+    bar.appendChild(label);
+
+    barsContainer.appendChild(bar);
+    barItems.push({ value: values[index], element: bar, position: index });
+  }
+}
+
+function renderBars(step) {
+  placeBars(step.bars);
+  const slotPercent = 100 / step.bars.length;
+  const gapPercent = slotPercent * BAR_GAP_FRACTION;
+
+  for (const item of barItems) {
+    const index = item.position;
+    const bar = item.element;
+    bar.style.left = index * slotPercent + gapPercent / 2 + "%";
+    bar.style.width = slotPercent - gapPercent + "%";
+
+    bar.classList.toggle("highlight", step.highlight.includes(index));
+    bar.classList.toggle("swapped", step.swapped && step.highlight.includes(index));
+    bar.classList.toggle("sorted", step.sorted.includes(index));
+  }
+}
+
+// Gives every bar element its position in this step. A bar keeps its old
+// position if the same number is still there, so with repeated numbers only
+// the bars that really moved get animated.
+function placeBars(values) {
+  const unplaced = barItems.slice();
+  const newPositions = [];
+
+  for (let index = 0; index < values.length; index++) {
+    let chosen = -1;
+    for (let k = 0; k < unplaced.length; k++) {
+      if (unplaced[k].value !== values[index]) {
+        continue;
+      }
+      if (chosen === -1 || unplaced[k].position === index) {
+        chosen = k;
       }
     }
-    if (step.sorted.includes(index)) {
-      bar.classList.add("sorted");
-    }
-    barsContainer.appendChild(bar);
+    newPositions.push({ item: unplaced[chosen], position: index });
+    unplaced.splice(chosen, 1);
+  }
+
+  for (const entry of newPositions) {
+    entry.item.position = entry.position;
   }
 }
 
@@ -207,13 +243,17 @@ function playNextStep() {
   }
 }
 
+function swapDurationMs() {
+  return Number(document.getElementById("speed").value);
+}
+
 function currentDelayMs() {
-  const speedSlider = document.getElementById("speed");
-  const speed = Number(speedSlider.value);
-  const min = Number(speedSlider.min) || 1;
-  const max = Number(speedSlider.max) || 10;
-  const fraction = (speed - min) / (max - min);
-  return Math.round(SLOWEST_DELAY_MS - fraction * (SLOWEST_DELAY_MS - FASTEST_DELAY_MS));
+  return swapDurationMs() + PAUSE_AFTER_ANIMATION_MS;
+}
+
+function applySwapSpeed() {
+  document.getElementById("bars").style.setProperty("--swap-duration", swapDurationMs() + "ms");
+  restartTimerWithNewSpeed();
 }
 
 function restartTimerWithNewSpeed() {
@@ -237,49 +277,9 @@ function goToNextStep() {
   }
 }
 
-// ---------- Custom array input ----------
-
-function applyArrayInput() {
-  const errorBox = document.getElementById("input-error");
-  const text = document.getElementById("array-input").value;
-  const result = parseArrayInput(text);
-
-  if (result.error) {
-    errorBox.textContent = result.error;
-    return;
-  }
-  errorBox.textContent = "";
-  useArray(result.values);
-}
-
-// Returns { values } on success or { error } with a message for the student.
-function parseArrayInput(text) {
-  const parts = text.split(",");
-  const values = [];
-
-  for (const part of parts) {
-    const trimmed = part.trim();
-    if (trimmed === "") {
-      continue;
-    }
-    if (!/^-?\d+$/.test(trimmed)) {
-      return { error: "„" + trimmed + "“ не е цяло число. Пиши числа, разделени със запетая." };
-    }
-    const value = Number(trimmed);
-    if (value < INPUT_MIN_VALUE || value > INPUT_MAX_VALUE) {
-      return { error: "Числата трябва да са от " + INPUT_MIN_VALUE + " до " + INPUT_MAX_VALUE + "." };
-    }
-    values.push(value);
-  }
-
-  if (values.length < INPUT_MIN_LENGTH || values.length > INPUT_MAX_LENGTH) {
-    return { error: "Въведи от " + INPUT_MIN_LENGTH + " до " + INPUT_MAX_LENGTH + " числа (сега са " + values.length + ")." };
-  }
-  return { values: values };
-}
+// ---------- New array ----------
 
 function useNewRandomArray() {
-  document.getElementById("input-error").textContent = "";
   useArray(makeRandomArray());
 }
 
@@ -294,34 +294,25 @@ function wirePlayerControls() {
   document.getElementById("prev-button").addEventListener("click", goToPreviousStep);
   document.getElementById("next-button").addEventListener("click", goToNextStep);
   document.getElementById("play-button").addEventListener("click", togglePlayback);
-  document.getElementById("speed").addEventListener("input", restartTimerWithNewSpeed);
-  document.getElementById("apply-button").addEventListener("click", applyArrayInput);
+  document.getElementById("speed").addEventListener("input", applySwapSpeed);
   document.getElementById("random-button").addEventListener("click", useNewRandomArray);
-  document.getElementById("array-input").addEventListener("keydown", applyOnEnter);
   document.addEventListener("keydown", handlePlayerKeys);
-}
-
-function applyOnEnter(event) {
-  if (event.key === "Enter") {
-    applyArrayInput();
-  }
+  applySwapSpeed();
 }
 
 function handlePlayerKeys(event) {
-  if (!isLessonScreenVisible() || event.target.id === "array-input") {
+  if (!isLessonScreenVisible()) {
     return;
   }
 
-  if (event.key === " ") {
-    // Stops the page from scrolling and a focused button from also being "clicked".
+  // preventDefault stops the page from scrolling and a focused button
+  // from also being "clicked" by Space.
+  if (event.key === " " || event.key === "ArrowRight") {
     event.preventDefault();
-    togglePlayback();
+    goToNextStep();
   } else if (event.key === "ArrowLeft") {
     event.preventDefault();
     goToPreviousStep();
-  } else if (event.key === "ArrowRight") {
-    event.preventDefault();
-    goToNextStep();
   }
 }
 

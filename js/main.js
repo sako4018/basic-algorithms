@@ -151,11 +151,8 @@ function saveTheme(theme) {
 
 function getCurrentTheme() {
   const theme = document.documentElement.getAttribute("data-theme");
-  if (theme === "light" || theme === "dark") {
-    return theme;
-  }
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  return prefersDark ? "dark" : "light";
+  // Black is the default look; light is only used when picked with the button.
+  return theme === "light" ? "light" : "dark";
 }
 
 // The button shows the theme you will switch TO.
@@ -181,7 +178,7 @@ function initTheme() {
   if (savedTheme === "light" || savedTheme === "dark") {
     applyTheme(savedTheme);
   } else {
-    // No saved choice: CSS follows the system setting, we only set the icon.
+    // No saved choice: CSS uses the black theme, we only set the icon.
     updateThemeButton();
   }
 }
