@@ -23,7 +23,7 @@ An interactive algorithm visualizer for students aged 12–16. Each lesson shows
 
 ## Planned architecture
 
-The core idea, which spans all lessons: **each algorithm does not animate itself.** A lesson file in `js/lessons/` runs the algorithm on the input array and produces a precomputed list of step objects (which elements to highlight/swap, which code line is active, current variable values, counter values, explanation text). The shared player in `js/player.js` only renders a given step and handles step forward / step back, optional play / pause and the swap animation speed. Because steps are precomputed, stepping backward is just showing the previous step. Adding an algorithm = adding one lesson file that emits steps.
+The core idea, which spans all lessons: **each algorithm does not animate itself.** A lesson file in `js/lessons/` runs the algorithm on the input array and produces a precomputed list of step objects (which elements to highlight/swap, which code line is active, current variable values, compare/swap counts, explanation text). The counts are not shown on screen any more; lessons use them in the final "Готово!" text. The shared player in `js/player.js` only renders a given step and handles step forward / step back, optional play / pause and the swap animation speed. Because steps are precomputed, stepping backward is just showing the previous step. Adding an algorithm = adding one lesson file that emits steps.
 
 Lesson progress and quiz results are stored in `localStorage`.
 
