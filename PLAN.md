@@ -80,7 +80,7 @@ algorithm-visualizer/
 
 ## Етапи
 1. ✅ Скелет: начален екран + общ плейър + **Bubble sort** (анимация, код, променливи). Черен минималистичен вид по `TASTE.md`.
-2. Selection, Insertion (уроците са в клон `stage2-sorts`), линейно и двоично търсене.
+2. ✅ Selection, Insertion. Остават линейно и двоично търсене.
 3. Рекурсия, Merge sort, Quick sort, сравнение.
 4. Стек, опашка, BFS/DFS, Dijkstra.
 5. Тестове „провери се“, напредък, README, GitHub Pages.

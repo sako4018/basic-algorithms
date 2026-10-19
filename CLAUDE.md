@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-Stage 1 is done: home screen (`js/main.js`), shared player (`js/player.js`), styles (`css/style.css`) and the Bubble sort lesson. The look follows `TASTE.md`. `PLAN.md` (in Bulgarian) has the lesson format, the algorithm list per level and the remaining stages.
+Stage 1 is done: home screen (`js/main.js`), shared player (`js/player.js`), styles (`css/style.css`) and the Bubble sort lesson. Stage 2 has Selection and Insertion sort; linear and binary search are still to do. The look follows `TASTE.md`. `PLAN.md` (in Bulgarian) has the lesson format, the algorithm list per level and the remaining stages.
 
 ## What this is
 
