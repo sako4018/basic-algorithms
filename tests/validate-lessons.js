@@ -20,26 +20,49 @@ for (const [f, n] of names) {
   const L = vm.runInContext(n, ctx);
   console.log(f, n, "steps:");
   for (let run = 0; run < 200; run++) {
-    const arr = Array.from({length: 8}, () => 5 + Math.floor(Math.random() * 95));
-    if (run % 10 === 0) { arr[1] = arr[0]; arr[5] = arr[4]; } // duplicates
-    if (run === 1) arr.sort((a,b)=>a-b);
-    if (run === 2) arr.sort((a,b)=>b-a);
-    const steps = L.buildSteps(arr.slice());
-    const sortedInput = [...arr].sort((a,b)=>a-b);
+    // A lesson with its own view or input (recursion...) makes its own input
+    // and has no bars; the other lessons get a random array of 8 numbers.
+    const ownInput = !!(L.view || L.makeInput);
+    let input;
+    let sortedInput = null;
+    if (ownInput) {
+      input = L.makeInput ? L.makeInput() : Array.from({length: 8}, () => 5 + Math.floor(Math.random() * 95));
+    } else {
+      input = Array.from({length: 8}, () => 5 + Math.floor(Math.random() * 95));
+      if (run % 10 === 0) { input[1] = input[0]; input[5] = input[4]; } // duplicates
+      if (run === 1) input.sort((a,b)=>a-b);
+      if (run === 2) input.sort((a,b)=>b-a);
+      sortedInput = [...input].sort((a,b)=>a-b);
+    }
+    const steps = L.buildSteps(Array.isArray(input) ? input.slice() : input);
+    if (!Array.isArray(steps) || steps.length === 0) bad(`${f} run${run} no steps`);
     steps.forEach((s, i) => {
       const where = `${f} run${run} step${i}`;
-      if (s.bars.length !== 8) bad(where + " bars length");
+      if (ownInput) {
+        if (!Array.isArray(s.bars)) bad(where + " bars not array");
+      } else if (s.bars.length !== 8) bad(where + " bars length");
+      const barCount = ownInput ? 0 : 8;
       for (const k of ["highlight","sorted","lines"]) if (!Array.isArray(s[k])) bad(where + " " + k + " not array");
-      [...s.highlight, ...s.sorted].forEach(x => { if (!(x >= 0 && x < 8)) bad(where + " index " + x); });
+      [...s.highlight, ...s.sorted].forEach(x => { if (!(x >= 0 && x < barCount)) bad(where + " index " + x); });
+      if (L.view === "stack") {
+        if (!Array.isArray(s.stack)) bad(where + " stack not array");
+        else s.stack.forEach(c => { if (!c.label || typeof c.note !== "string") bad(where + " stack item"); });
+        if (s.returned && !s.returned.label) bad(where + " returned label");
+        if (s.pegs && !(s.pegs.length === 3 && s.pegs.every(Array.isArray))) bad(where + " pegs");
+      }
       const langs = { js: [L.code, null], ...Object.fromEntries(Object.entries(L.otherLanguages||{}).map(([k,v])=>[k,[v.code,v.lineMap||null]])) };
-      for (const [lang,[code,map]] of Object.entries(langs)) for (const ln of s.lines) {
-        const mapped = map && map[ln] ? map[ln] : [ln];
-        mapped.forEach(x => { if (!(x >= 1 && x <= code.length)) bad(where + ` ${lang} line ${x}/${code.length}`); });
+      for (const [lang,[code,map]] of Object.entries(langs)) {
+        if (ownInput && s.lines.length > 1) bad(where + " more than one active line");
+        for (const ln of s.lines) {
+          const mapped = map && map[ln] ? map[ln] : [ln];
+          mapped.forEach(x => { if (!(x >= 1 && x <= code.length)) bad(where + ` ${lang} line ${x}/${code.length}`); });
+        }
       }
       if (typeof s.text !== "string" || !s.text) bad(where + " text");
       if (/\b1 сравнения\b|\b1 размени\b/.test(s.text)) bad(where + " plural: " + s.text);
     });
     const last = steps[steps.length-1];
+    if (ownInput && !/^Готово/.test(last.text)) bad(`${f} run${run} last step is not "Готово"`);
     if (/sort/.test(f) && JSON.stringify(last.bars) !== JSON.stringify(sortedInput)) bad(`${f} run${run} not sorted at end`);
   }
   console.log("  languages:", Object.keys(L.otherLanguages||{}).join(","));
