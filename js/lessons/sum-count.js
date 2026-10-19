@@ -121,12 +121,12 @@ function buildSumCountSteps(input) {
     const value = arr[i];
     const remainder = value % 2;
     if (remainder === 0) {
-      addStep([6], [i], value + " % 2 = 0, делим го на 2 без остатък. Значи е четно.", currentVars(i));
+      addStep([6], [i], value + " % 2 = 0, дели се на 2 без остатък. Значи е четно.", currentVars(i));
       count++;
       countedIndexes.push(i);
       addStep([7], [i], "Броим го. Четни числа досега: " + count + ".", currentVars(i));
     } else {
-      addStep([6], [i], value + " % 2 = 1, остава остатък. Значи е нечетно и не го броим.", currentVars(i));
+      addStep([6], [i], value + " % 2 = " + remainder + ", остава остатък. Значи е нечетно и не го броим.", currentVars(i));
     }
   }
 
@@ -140,8 +140,8 @@ function buildSumCountSteps(input) {
     addEvenCheckSteps(i);
   }
 
-  addStep([10], [], "Готово! Сумата на всички числа е " + sum + ", а четните числа са " + count +
-    ". Проверихме всяко от " + arr.length + "-те числа по веднъж.", { sum: sum, count: count });
+  addStep([10], [], "Готово! Сумата на всички числа е " + sum + ", а броят на четните числа е " + count +
+    ". Минахме през масива само веднъж.", { sum: sum, count: count });
 
   return steps;
 }
