@@ -34,6 +34,7 @@ const LEVELS = [
       { title: "Рекурсия (recursion): факториел и Ханойски кули" },
       mergeSortLesson,
       quickSortLesson,
+      compareSortsLesson,
     ],
   },
   {
