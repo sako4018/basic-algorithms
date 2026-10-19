@@ -76,6 +76,24 @@ const bfsLesson = {
         "}",
       ],
     },
+    csharp: {
+      code: [
+        "static List<int> bfs(List<List<int>> graph, int start) {",
+        "  List<int> visited = new List<int> { start };",
+        "  Queue<int> queue = new Queue<int>(new[] { start });",
+        "  while (queue.Count > 0) {",
+        "    int node = queue.Dequeue();",
+        "    foreach (int next in graph[node]) {",
+        "      if (!visited.Contains(next)) {",
+        "        visited.Add(next);",
+        "        queue.Enqueue(next);",
+        "      }",
+        "    }",
+        "  }",
+        "  return visited;",
+        "}",
+      ],
+    },
     java: {
       code: [
         "static List<Integer> bfs(List<List<Integer>> graph, int start) {",
