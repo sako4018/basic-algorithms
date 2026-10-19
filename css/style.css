@@ -427,6 +427,7 @@ input:focus-visible {
 
 .code-tab-c { color: #8e8cf0; }
 .code-tab-cpp { color: #6fa8f5; }
+.code-tab-csharp { color: #b07cf0; }
 .code-tab-java { color: #f0743e; }
 .code-tab-js { color: #f0db4f; }
 .code-tab-python { color: #ffd343; }

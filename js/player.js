@@ -223,6 +223,7 @@ function barHeightPercent(value, maxValue) {
 const CODE_LANGUAGES = [
   { id: "c", label: "C" },
   { id: "cpp", label: "C++" },
+  { id: "csharp", label: "C#" },
   { id: "java", label: "Java" },
   { id: "js", label: "JS" },
   { id: "python", label: "Python" },
@@ -309,7 +310,7 @@ function renderCode() {
 
 const CODE_KEYWORDS = [
   "function", "for", "while", "if", "else", "return", "let", "const", "var",
-  "void", "int", "long", "static", "def", "in", "and", "not",
+  "void", "int", "long", "static", "def", "in", "and", "not", "foreach", "new",
 ];
 // The word right after one of these is the function's name.
 const FUNCTION_DECLARATION_WORDS = ["function", "void", "def"];

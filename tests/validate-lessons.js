@@ -40,7 +40,7 @@ function checkCompareRows(s, where) {
 // Lessons with their own input (view + makeInput): graph lessons (checked separately).
 function checkLines(where, L, s) {
   const langs = { js: [L.code, null], ...Object.fromEntries(Object.entries(L.otherLanguages||{}).map(([k,v])=>[k,[v.code,v.lineMap||null]])) };
-  if (Object.keys(langs).length !== 5) bad(where + " needs 5 languages");
+  if (Object.keys(langs).length !== 6) bad(where + " needs 6 languages");
   if (!s.lines.length) bad(where + " no active line");
   for (const [lang,[code,map]] of Object.entries(langs)) for (const ln of s.lines) {
     const mapped = map && map[ln] ? map[ln] : [ln];
@@ -133,6 +133,9 @@ function checkInputLesson(f, L) {
 for (const [f, n] of names) {
   const L = vm.runInContext(n, ctx);
   console.log(f, n, "steps:");
+  for (const lang of ["c", "cpp", "csharp", "java", "python"]) {
+    if (!L.otherLanguages || !L.otherLanguages[lang]) bad(f + " has no " + lang + " code");
+  }
   if (L.view === "graph") {
     checkInputLesson(f, L);
     console.log("  languages:", Object.keys(L.otherLanguages||{}).join(","));
