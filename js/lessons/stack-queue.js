@@ -31,7 +31,7 @@ const stackQueueLesson = {
     "  }",
     "}",
   ],
-  // C, C++ and Java have the same line numbers as JS. Python is shorter,
+  // C, C++, C# and Java have the same line numbers as JS. Python is shorter,
   // so it has a lineMap.
   otherLanguages: {
     c: {
@@ -64,6 +64,23 @@ const stackQueueLesson = {
         "    int fromStack = stack.back(); stack.pop_back();",
         "    int fromQueue = queue.front(); queue.pop_front();",
         "    cout << fromStack << \" \" << fromQueue << endl;",
+        "  }",
+        "}",
+      ],
+    },
+    csharp: {
+      code: [
+        "static void stackAndQueue(int[] numbers) {",
+        "  Stack<int> stack = new Stack<int>();",
+        "  Queue<int> queue = new Queue<int>();",
+        "  for (int i = 0; i < numbers.Length; i++) {",
+        "    stack.Push(numbers[i]);",
+        "    queue.Enqueue(numbers[i]);",
+        "  }",
+        "  while (stack.Count > 0) {",
+        "    int fromStack = stack.Pop();",
+        "    int fromQueue = queue.Dequeue();",
+        "    Console.WriteLine(fromStack + \" \" + fromQueue);",
         "  }",
         "}",
       ],
