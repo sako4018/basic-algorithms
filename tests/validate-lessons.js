@@ -68,7 +68,7 @@ for (const [f, n] of names) {
       }
       const langs = { js: [L.code, null], ...Object.fromEntries(Object.entries(L.otherLanguages||{}).map(([k,v])=>[k,[v.code,v.lineMap||null]])) };
       for (const [lang,[code,map]] of Object.entries(langs)) {
-        if (ownInput && s.lines.length > 1) bad(where + " more than one active line");
+        if (ownInput && i < steps.length - 1 && s.lines.length === 0) bad(where + " no active line");
         for (const ln of s.lines) {
           const mapped = map && map[ln] ? map[ln] : [ln];
           mapped.forEach(x => { if (!(x >= 1 && x <= code.length)) bad(where + ` ${lang} line ${x}/${code.length}`); });

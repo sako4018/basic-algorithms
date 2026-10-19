@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/stack-view.css">
   <link rel="stylesheet" href="css/compare-view.css">
+  <link rel="stylesheet" href="css/stack-queue-view.css">
   <script>
     // Applies a saved light theme before the first paint, so it doesn't
     // flash black first. main.js handles the theme button.
@@ -87,9 +88,12 @@
   <script src="js/lessons/recursion-factorial.js"></script>
   <script src="js/lessons/recursion-hanoi.js"></script>
   <script src="js/lessons/compare-sorts.js"></script>
+  <script src="js/lessons/stack-queue.js"></script>
   <script src="js/player.js"></script>
+  <!-- Views register themselves in STEP_VIEWS (defined in player.js), so they come after it. -->
   <script src="js/views/stack-view.js"></script>
   <script src="js/views/compare-view.js"></script>
+  <script src="js/views/stack-queue-view.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
