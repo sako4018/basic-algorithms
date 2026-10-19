@@ -73,13 +73,34 @@ const linearSearchLesson = {
   buildSteps: buildLinearSearchSteps,
 };
 
-// The target is a number from the array, so the search always finds it.
+// Rule: about one run in four the target is a number that is NOT in the
+// array, so the student also sees the "not found" (-1) ending.
+const LINEAR_SEARCH_MISSING_CHANCE = 0.25;
+const LINEAR_SEARCH_MIN_TARGET = 5;
+const LINEAR_SEARCH_MAX_TARGET = 99;
+
 function pickLinearSearchTarget(arr) {
   if (arr.length === 0) {
     return 0;
   }
+  if (Math.random() < LINEAR_SEARCH_MISSING_CHANCE) {
+    return pickLinearSearchMissingNumber(arr);
+  }
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
+}
+
+// A number in the usual range that no element of arr has.
+function pickLinearSearchMissingNumber(arr) {
+  const range = LINEAR_SEARCH_MAX_TARGET - LINEAR_SEARCH_MIN_TARGET + 1;
+  let candidate = LINEAR_SEARCH_MIN_TARGET + Math.floor(Math.random() * range);
+  while (arr.includes(candidate)) {
+    candidate++;
+    if (candidate > LINEAR_SEARCH_MAX_TARGET) {
+      candidate = LINEAR_SEARCH_MIN_TARGET;
+    }
+  }
+  return candidate;
 }
 
 function linearSearchCompareText(compareCount) {
@@ -93,7 +114,8 @@ function buildLinearSearchSteps(input) {
   const arr = input.slice();
   const target = pickLinearSearchTarget(arr);
   const steps = [];
-  const foundIndexes = [];
+  // Positions already checked and not equal to the target; shown dimmed.
+  const checkedIndexes = [];
   let compareCount = 0;
 
   function addStep(lines, highlight, text, vars) {
@@ -101,7 +123,8 @@ function buildLinearSearchSteps(input) {
       bars: arr.slice(),
       highlight: highlight,
       swapped: false,
-      sorted: foundIndexes.slice(),
+      sorted: [],
+      dimmed: checkedIndexes.slice(),
       lines: lines,
       vars: vars,
       compares: compareCount,
@@ -110,7 +133,8 @@ function buildLinearSearchSteps(input) {
     });
   }
 
-  addStep([1], [], "Започваме. Търсим числото " + target + " в масива.", { target: target });
+  const startText = "Започваме. Търсим числото " + target + " в масива. Понякога търсеното число го няма в масива. Проверените стълбове стават прозрачни.";
+  addStep([1], [], startText, { target: target });
 
   for (let i = 0; i < arr.length; i++) {
     compareCount++;
@@ -118,12 +142,12 @@ function buildLinearSearchSteps(input) {
 
     if (arr[i] === target) {
       addStep([2, 3], [i], "Проверявам позиция " + i + ": " + arr[i] + " = " + target + ". Намерихме го!", vars);
-      foundIndexes.push(i);
-      addStep([4], [], "Готово! Числото " + target + " е на позиция " + i + ". Направихме " + linearSearchCompareText(compareCount) + ".", vars);
+      addStep([4], [i], "Готово! Числото " + target + " е на позиция " + i + ". Направихме " + linearSearchCompareText(compareCount) + ".", vars);
       return steps;
     }
 
     addStep([2, 3], [i], "Проверявам позиция " + i + ": " + arr[i] + " ≠ " + target + ", продължавам нататък.", vars);
+    checkedIndexes.push(i);
   }
 
   addStep([7], [], "Готово! Минахме целия масив с " + linearSearchCompareText(compareCount) + " и не намерихме " + target + ". Връщаме -1.", { target: target });
