@@ -1,8 +1,8 @@
 // Binary search lesson.
 // The player shows `code` next to the animation. Each step says which
 // lines (1-based) of `code` are active, so keep them in sync.
-// Colors: green bars = the part we still search in, yellow = mid,
-// gray = the part we already threw away.
+// Colors: solid gray bars = the part we still search in, yellow = mid,
+// dashed empty bars (`dimmed`) = the part we already threw away.
 
 const binarySearchLesson = {
   id: "binary-search",
@@ -119,15 +119,16 @@ function buildBinarySearchSteps(input) {
   const steps = [];
   let compareCount = 0;
   let checkedCount = 0;
-  // Indexes still being searched; shown green. Mid is left out so it stays yellow.
-  let searchIndexes = [];
+  // Indexes already thrown away; shown dimmed.
+  let discardedIndexes = [];
 
   function addStep(lines, highlight, text, vars) {
     steps.push({
       bars: arr.slice(),
       highlight: highlight,
       swapped: false,
-      sorted: searchIndexes.slice(),
+      sorted: [],
+      dimmed: discardedIndexes.slice(),
       lines: lines,
       vars: vars,
       compares: compareCount,
@@ -142,14 +143,12 @@ function buildBinarySearchSteps(input) {
   const target = pickBinarySearchTarget(arr);
   let low = 0;
   let high = arr.length - 1;
-  searchIndexes = binarySearchIndexesBetween(low, high, -1);
-  addStep([1], [], "Масивът е подреден. Търсим числото " + target + ". Зелените стълбове са частта, в която още търсим.", { target: target });
+  addStep([1], [], "Масивът е подреден. Търсим числото " + target + ". Прозрачните стълбове с прекъсната рамка ще са изхвърлената част, а плътните са частта, в която още търсим.", { target: target });
   addStep([2, 3], [], "low = " + low + " е началото, а high = " + high + " е краят на частта, в която търсим.", { target: target, low: low, high: high });
 
   while (low <= high) {
     const mid = Math.floor((low + high) / 2);
     checkedCount++;
-    searchIndexes = binarySearchIndexesBetween(low, high, mid);
     const vars = { target: target, low: low, high: high, mid: mid, "arr[mid]": arr[mid] };
     const roundingNote = (low + high) % 2 === 1 ? " (закръгляме надолу)" : "";
     addStep([4, 5], [mid], "low ≤ high, значи още има къде да търсим. Средата е mid = (" + low + " + " + high + ") / 2 = " + mid + roundingNote + ", там е числото " + arr[mid] + ".", vars);
@@ -157,8 +156,8 @@ function buildBinarySearchSteps(input) {
     compareCount++;
     if (arr[mid] === target) {
       addStep([6], [mid], "Сравнявам " + arr[mid] + " с " + target + ": равни са, намерихме го!", vars);
-      searchIndexes = [mid];
-      addStep([7], [], "Готово! Намерихме " + target + " на позиция " + mid + ". Погледнахме само " + checkedCount + " от " + arr.length + " числа и направихме " + binarySearchCompareText(compareCount) + ".", vars);
+      discardedIndexes = binarySearchIndexesOutside(mid, mid, arr.length);
+      addStep([7], [mid], "Готово! Намерихме " + target + " на позиция " + mid + ". Погледнахме само " + checkedCount + " от " + arr.length + " числа и направихме " + binarySearchCompareText(compareCount) + ".", vars);
       return steps;
     }
 
@@ -166,12 +165,12 @@ function buildBinarySearchSteps(input) {
     if (arr[mid] < target) {
       addStep([6, 9], [mid], "Сравнявам " + arr[mid] + " с " + target + ": " + arr[mid] + " < " + target + ", значи " + target + " е вдясно от средата.", vars);
       low = mid + 1;
-      searchIndexes = binarySearchIndexesBetween(low, high, -1);
+      discardedIndexes = binarySearchIndexesOutside(low, high, arr.length);
       addStep([10], [], "Изхвърляме лявата половина заедно със средата: low = " + low + ". " + binarySearchRangeText(low, high), { target: target, low: low, high: high, mid: mid });
     } else {
       addStep([6, 9], [mid], "Сравнявам " + arr[mid] + " с " + target + ": " + arr[mid] + " > " + target + ", значи " + target + " е вляво от средата.", vars);
       high = mid - 1;
-      searchIndexes = binarySearchIndexesBetween(low, high, -1);
+      discardedIndexes = binarySearchIndexesOutside(low, high, arr.length);
       addStep([11, 12], [], "Изхвърляме дясната половина заедно със средата: high = " + high + ". " + binarySearchRangeText(low, high), { target: target, low: low, high: high, mid: mid });
     }
   }
@@ -193,10 +192,11 @@ function pickBinarySearchTarget(values) {
   return values[randomIndex];
 }
 
-function binarySearchIndexesBetween(low, high, skippedIndex) {
+// Every index that is not between low and high.
+function binarySearchIndexesOutside(low, high, length) {
   const indexes = [];
-  for (let index = low; index <= high; index++) {
-    if (index !== skippedIndex) {
+  for (let index = 0; index < length; index++) {
+    if (index < low || index > high) {
       indexes.push(index);
     }
   }

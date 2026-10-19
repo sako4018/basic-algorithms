@@ -207,6 +207,8 @@ function buildQuickSortSteps(input) {
   const arr = input.slice();
   const steps = [];
   const sortedIndexes = [];
+  // Where the pivot is while its part is being partitioned; shown with an outline.
+  let pivotMarkIndexes = [];
   let compareCount = 0;
   let swapCount = 0;
 
@@ -216,6 +218,7 @@ function buildQuickSortSteps(input) {
       highlight: highlight,
       swapped: swapped === true,
       sorted: sortedIndexes.slice(),
+      marked: pivotMarkIndexes.slice(),
       lines: lines,
       vars: vars,
       compares: compareCount,
@@ -265,7 +268,8 @@ function buildQuickSortSteps(input) {
   // Returns where the pivot ended up.
   function partitionPart(low, high) {
     const pivot = arr[high];
-    addStep([3, 10, 11], [high], "Опората (pivot) е последното число в " + partText(low, high) + ": " + pivot + ". По-малките от нея ще сложим вляво.", { low: low, high: high, pivot: pivot });
+    pivotMarkIndexes = [high];
+    addStep([3, 10, 11], [high], "Опората (pivot) е последното число в " + partText(low, high) + ": " + pivot + ", отбелязана с контур. По-малките от нея ще сложим вляво.", { low: low, high: high, pivot: pivot });
 
     let i = low - 1;
     addStep([12], [high], "i показва докъде стигат по-малките от " + pivot + " числа. Засега няма такива, затова i = " + i + ".", { low: low, high: high, pivot: pivot, i: i });
@@ -309,6 +313,7 @@ function buildQuickSortSteps(input) {
     } else {
       const other = arr[pivotIndex];
       swapItems(pivotIndex, high);
+      pivotMarkIndexes = [pivotIndex];
       let text = "Минах през цялата част. Слагам опората " + pivot + " веднага след по-малките: разменям я с " + other + " (позиция " + pivotIndex + ").";
       if (other === pivot) {
         text += " Двете числа са равни, затова на екрана нищо не се мести.";
@@ -317,6 +322,7 @@ function buildQuickSortSteps(input) {
     }
 
     sortedIndexes.push(pivotIndex);
+    pivotMarkIndexes = [];
     addStep([20, 3], [], "Опората " + pivot + " е на окончателното си място (позиция " + pivotIndex + "). Вляво от нея са по-малките, вдясно — останалите.", { low: low, high: high, pivot: pivot, pivotIndex: pivotIndex });
     return pivotIndex;
   }

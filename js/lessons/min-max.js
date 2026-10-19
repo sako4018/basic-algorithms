@@ -97,8 +97,9 @@ const minMaxLesson = {
   buildSteps: buildMinMaxSteps,
 };
 
-// The array is never changed. Yellow is the number we look at now; green
-// marks where the current min and max are, so the student sees them move.
+// The array is never changed. Yellow is the number we look at now; an
+// outline (`marked`) shows where the current min and max are, so the
+// student sees them move.
 function buildMinMaxSteps(input) {
   const arr = input.slice();
   const steps = [];
@@ -109,15 +110,16 @@ function buildMinMaxSteps(input) {
   let compareCount = 0;
 
   function addStep(lines, highlight, text, vars) {
-    let sorted = [];
+    let marked = [];
     if (minMaxSet) {
-      sorted = minIndex === maxIndex ? [minIndex] : [minIndex, maxIndex];
+      marked = minIndex === maxIndex ? [minIndex] : [minIndex, maxIndex];
     }
     steps.push({
       bars: arr.slice(),
       highlight: highlight,
       swapped: false,
-      sorted: sorted,
+      sorted: [],
+      marked: marked,
       lines: lines,
       vars: vars,
       compares: compareCount,
@@ -158,7 +160,7 @@ function buildMinMaxSteps(input) {
 
   addStep([1], [], "Започваме. Търсим най-малкото и най-голямото число.", {});
   minMaxSet = true;
-  addStep([2, 3], [0], "Първото число е " + arr[0] + ". Засега то е и минимум, и максимум.", { min: arr[0], max: arr[0] });
+  addStep([2, 3], [0], "Първото число е " + arr[0] + ". Засега то е и минимум, и максимум. Контурът около стълб показва къде са те.", { min: arr[0], max: arr[0] });
 
   for (let i = 1; i < arr.length; i++) {
     addMinCheckSteps(i);

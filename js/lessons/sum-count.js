@@ -103,7 +103,8 @@ function buildSumCountSteps(input) {
       bars: arr.slice(),
       highlight: highlight,
       swapped: false,
-      sorted: countedIndexes.slice(),
+      sorted: [],
+      marked: countedIndexes.slice(),
       lines: lines,
       vars: vars,
       compares: compareCount,
@@ -124,7 +125,11 @@ function buildSumCountSteps(input) {
       addStep([6], [i], value + " % 2 = 0, дели се на 2 без остатък. Значи е четно.", currentVars(i));
       count++;
       countedIndexes.push(i);
-      addStep([7], [i], "Броим го. Четни числа досега: " + count + ".", currentVars(i));
+      let countText = "Броим го. Четни числа досега: " + count + ".";
+      if (count === 1) {
+        countText += " Преброените числа ще са с контур.";
+      }
+      addStep([7], [i], countText, currentVars(i));
     } else {
       addStep([6], [i], value + " % 2 = " + remainder + ", остава остатък. Значи е нечетно и не го броим.", currentVars(i));
     }
