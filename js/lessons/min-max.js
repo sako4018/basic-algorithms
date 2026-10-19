@@ -104,14 +104,20 @@ function buildMinMaxSteps(input) {
   const steps = [];
   let minIndex = 0;
   let maxIndex = 0;
+  // False on the very first step, before min and max get arr[0].
+  let minMaxSet = false;
   let compareCount = 0;
 
   function addStep(lines, highlight, text, vars) {
+    let sorted = [];
+    if (minMaxSet) {
+      sorted = minIndex === maxIndex ? [minIndex] : [minIndex, maxIndex];
+    }
     steps.push({
       bars: arr.slice(),
       highlight: highlight,
       swapped: false,
-      sorted: minIndex === maxIndex ? [minIndex] : [minIndex, maxIndex],
+      sorted: sorted,
       lines: lines,
       vars: vars,
       compares: compareCount,
@@ -151,6 +157,7 @@ function buildMinMaxSteps(input) {
   }
 
   addStep([1], [], "Започваме. Търсим най-малкото и най-голямото число.", {});
+  minMaxSet = true;
   addStep([2, 3], [0], "Първото число е " + arr[0] + ". Засега то е и минимум, и максимум.", { min: arr[0], max: arr[0] });
 
   for (let i = 1; i < arr.length; i++) {
