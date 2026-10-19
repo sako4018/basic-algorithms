@@ -30,7 +30,8 @@ for (const [f, n] of names) {
       const where = `${f} run${run} step${i}`;
       if (s.bars.length !== 8) bad(where + " bars length");
       for (const k of ["highlight","sorted","lines"]) if (!Array.isArray(s[k])) bad(where + " " + k + " not array");
-      [...s.highlight, ...s.sorted].forEach(x => { if (!(x >= 0 && x < 8)) bad(where + " index " + x); });
+      for (const k of ["dimmed","marked"]) if (s[k] !== undefined && !Array.isArray(s[k])) bad(where + " " + k + " not array");
+      [...s.highlight, ...s.sorted, ...(s.dimmed||[]), ...(s.marked||[])].forEach(x => { if (!(x >= 0 && x < 8)) bad(where + " index " + x); });
       const langs = { js: [L.code, null], ...Object.fromEntries(Object.entries(L.otherLanguages||{}).map(([k,v])=>[k,[v.code,v.lineMap||null]])) };
       for (const [lang,[code,map]] of Object.entries(langs)) for (const ln of s.lines) {
         const mapped = map && map[ln] ? map[ln] : [ln];
