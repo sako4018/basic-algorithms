@@ -1,0 +1,162 @@
+/* Call stack view (js/views/stack-view.js). Uses the colours from style.css,
+   so it follows the black and the light theme. */
+
+.stack-view {
+  display: flex;
+  gap: 24px;
+  min-height: 320px;
+  margin-bottom: 28px;
+}
+
+.stack-panel {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.stack-title {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+
+/* column-reverse puts the first call (the bottom of the stack) at the bottom. */
+.stack-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  gap: 6px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--border-strong);
+}
+
+.stack-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  background-color: var(--surface);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+.stack-box.top {
+  border-color: var(--text);
+  border-left-width: 4px;
+}
+
+.stack-label {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.stack-note {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: right;
+}
+
+.stack-box.returned {
+  border-style: dashed;
+  opacity: 0.6;
+  animation: stack-fade 700ms ease-out;
+}
+
+.stack-box.returned .stack-value {
+  color: var(--bar-sorted);
+  font-weight: 700;
+}
+
+.stack-empty {
+  color: var(--text-faint);
+  text-align: center;
+  padding: 8px;
+}
+
+@keyframes stack-fade {
+  from { opacity: 1; }
+  to { opacity: 0.6; }
+}
+
+/* ---------- Pegs (Tower of Hanoi) ---------- */
+
+.pegs-panel {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.peg {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* The disks sit on the bottom line; the thin vertical line is the pole. */
+.peg-disks {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 4px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--border-strong);
+}
+
+.peg-disks::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 1px);
+  width: 2px;
+  background-color: var(--border);
+}
+
+.disk {
+  position: relative;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  background-color: var(--bar);
+  color: var(--text);
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.disk.moved {
+  background-color: var(--bar-highlight);
+  color: #000000;
+}
+
+.peg-name {
+  text-align: center;
+  color: var(--text-muted);
+  padding-top: 6px;
+}
+
+@media (max-width: 720px) {
+  .stack-view {
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .stack-column,
+  .peg-disks {
+    min-height: 140px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stack-box.returned {
+    animation: none;
+  }
+}

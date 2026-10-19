@@ -31,7 +31,8 @@ const LEVELS = [
   {
     title: "Ниво 4 — по-бързи сортирания и рекурсия",
     lessons: [
-      { title: "Рекурсия (recursion): факториел и Ханойски кули" },
+      recursionFactorialLesson,
+      recursionHanoiLesson,
       mergeSortLesson,
       quickSortLesson,
     ],
