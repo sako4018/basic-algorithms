@@ -193,10 +193,11 @@ function quickSortLineMapForC() {
   return lineMap;
 }
 
-// Java has no `return arr;`, so everything after line 6 moves up by one.
+// Java has no `return arr;`, so JS line 7 points at the closing brace of
+// quickSort and everything after it moves up by one.
 function quickSortLineMapForJava() {
-  const lineMap = {};
-  for (let jsLine = 7; jsLine <= 27; jsLine++) {
+  const lineMap = { 7: [7] };
+  for (let jsLine = 8; jsLine <= 27; jsLine++) {
     lineMap[jsLine] = [jsLine - 1];
   }
   return lineMap;
