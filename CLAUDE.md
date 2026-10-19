@@ -8,7 +8,7 @@ All lessons from `PLAN.md` are built (19): loop trace, minimum, maximum, sum, co
 
 ## What this is
 
-An interactive algorithm visualizer for students aged 12–16. Each lesson shows an animation, a plain-language explanation of every step, the algorithm's code with the current line highlighted (tabs for C, C++, Java, JS, Python), and a live variables table. The teacher moves through the steps with Next / Back.
+An interactive algorithm visualizer for students aged 12–16. Each lesson shows an animation, a plain-language explanation of every step, the algorithm's code with the current line highlighted (tabs for C, C++, C#, Java, JS, Python), and a live variables table. The teacher moves through the steps with Next / Back.
 
 - All UI text is in Bulgarian; algorithm terms also given in English in parentheses (e.g. "сортиране чрез мехурчета (bubble sort)").
 - Audience is teenagers: modern, clean look — not a childish design.
@@ -16,7 +16,7 @@ An interactive algorithm visualizer for students aged 12–16. Each lesson shows
 
 ## Tech and running
 
-- Plain HTML + CSS + vanilla JavaScript, no frameworks, no npm, no build step. The lesson's main `code` is JavaScript and steps point at its lines. Each lesson also has `otherLanguages` (c, cpp, java, python): the same algorithm with the same variable names, plus an optional `lineMap` from JS line numbers to that language's lines. When you edit a lesson, update every language and re-check the line mapping. Rationale and rejected options are in `PLAN.md` → "Технология".
+- Plain HTML + CSS + vanilla JavaScript, no frameworks, no npm, no build step. The lesson's main `code` is JavaScript and steps point at its lines. Each lesson also has `otherLanguages` (c, cpp, csharp, java, python): the same algorithm with the same variable names, plus an optional `lineMap` from JS line numbers to that language's lines. When you edit a lesson, update every language and re-check the line mapping. Rationale and rejected options are in `PLAN.md` → "Технология".
 - Do NOT pick tech or simplify code based on the students' skill level. The only criteria are: the code is easy to read, easy to edit, and the user (Sarkis) can open any file and fix it himself.
 - Must work when `index.html` is opened directly from disk (`open index.html` → Safari), so avoid ES module imports or `fetch` of local files that break under `file://`; load scripts with plain `<script>` tags.
 - Intended to be hosted on GitHub Pages later.

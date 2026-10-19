@@ -27,7 +27,7 @@ tests/                проверка на уроците (Node)
 |---|---|
 | `id`, `title`, `intro` | име; `intro` не се показва на екрана |
 | `code` | редовете на JS кода (масив от низове) |
-| `otherLanguages` | `{c, cpp, java, python: {code, lineMap}}` |
+| `otherLanguages` | `{c, cpp, csharp, java, python: {code, lineMap}}` |
 | `buildSteps(values)` | връща масив от стъпки |
 
 ### Стъпка

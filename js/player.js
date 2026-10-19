@@ -218,7 +218,7 @@ function barHeightPercent(value, maxValue) {
   return Math.max(percent, MIN_BAR_HEIGHT_PERCENT);
 }
 
-// ---------- Code tabs (C, C++, Java, JS, Python) ----------
+// ---------- Code tabs (C, C++, C#, Java, JS, Python) ----------
 
 const CODE_LANGUAGES = [
   { id: "c", label: "C" },
