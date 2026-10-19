@@ -8,7 +8,7 @@ const LEVELS = [
   {
     title: "Ниво 1 — основи",
     lessons: [
-      { title: "Проследяване на цикъл и условие" },
+      loopTraceLesson,
       minMaxLesson,
       sumCountLesson,
     ],
