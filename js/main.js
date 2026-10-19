@@ -42,8 +42,9 @@ const LEVELS = [
     title: "Ниво 5 — структури и графи",
     lessons: [
       stackQueueLesson,
-      { title: "Обхождане в ширина и дълбочина (BFS и DFS)" },
-      { title: "Най-кратък път (Dijkstra)" },
+      bfsLesson,
+      dfsLesson,
+      dijkstraLesson,
     ],
   },
 ];
