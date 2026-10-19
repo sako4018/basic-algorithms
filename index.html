@@ -57,12 +57,14 @@
           <div class="controls-extra">
             <button id="play-button" class="text-button" type="button">▶ Пусни</button>
             <button id="random-button" class="text-button" type="button">Нов масив</button>
+            <button id="quiz-button" class="text-button" type="button">Провери се</button>
             <label class="speed-label" for="speed">Скорост на размяната
               <!-- Right = faster. Swap takes min + max - value ms, so 2000 = 0.8 s. -->
               <input id="speed" type="range" min="300" max="2500" step="100" value="2000">
             </label>
           </div>
           <p class="hint">Space или → напред, ← назад</p>
+          <div id="quiz" class="quiz" hidden></div>
         </div>
 
         <aside class="lesson-side">
@@ -96,6 +98,8 @@
   <script src="js/lessons/bfs.js"></script>
   <script src="js/lessons/dfs.js"></script>
   <script src="js/lessons/dijkstra.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/quiz.js"></script>
   <script src="js/player.js"></script>
   <!-- Views register themselves in STEP_VIEWS (defined in player.js), so they come after it. -->
   <script src="js/views/stack-view.js"></script>

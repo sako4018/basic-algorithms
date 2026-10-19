@@ -91,6 +91,10 @@ function showStep(stepIndex) {
   renderActiveCodeLines(step.lines);
   renderVariables(step.vars);
   document.getElementById("step-text").textContent = step.text;
+  hideQuiz();
+  if (stepIndex === playerSteps.length - 1) {
+    markLessonDone(playerLesson.id);
+  }
   document.getElementById("step-counter").textContent =
     (stepIndex + 1) + " / " + playerSteps.length;
   updateButtons();
@@ -393,6 +397,7 @@ function updateButtons() {
   const isLastStep = playerStepIndex === playerSteps.length - 1;
   document.getElementById("prev-button").disabled = isFirstStep;
   document.getElementById("next-button").disabled = isLastStep;
+  document.getElementById("quiz-button").disabled = isLastStep;
   document.getElementById("play-button").textContent = isPlaying() ? "⏸ Пауза" : "▶ Пусни";
 }
 
@@ -481,6 +486,66 @@ function goToNextStep() {
   }
 }
 
+// ---------- "Провери се" ----------
+
+function hideQuiz() {
+  const quiz = document.getElementById("quiz");
+  quiz.hidden = true;
+  quiz.innerHTML = "";
+}
+
+function showQuiz() {
+  stopPlayback();
+  const quizQuestion = makeQuizQuestion(playerSteps, playerStepIndex, Math.random);
+  if (quizQuestion === null) {
+    return;
+  }
+
+  const quiz = document.getElementById("quiz");
+  quiz.innerHTML = "";
+  quiz.hidden = false;
+
+  const question = document.createElement("p");
+  question.className = "quiz-question";
+  question.textContent = quizQuestion.question;
+  quiz.appendChild(question);
+
+  const result = document.createElement("p");
+  result.className = "quiz-result";
+  result.setAttribute("aria-live", "polite");
+
+  const optionButtons = [];
+  for (let i = 0; i < quizQuestion.options.length; i++) {
+    const option = document.createElement("button");
+    option.type = "button";
+    option.className = "quiz-option";
+    option.textContent = quizQuestion.options[i];
+    option.addEventListener("click", function () {
+      answerQuiz(quizQuestion, i, optionButtons, result);
+    });
+    optionButtons.push(option);
+    quiz.appendChild(option);
+  }
+  quiz.appendChild(result);
+  quiz.scrollIntoView({ block: "nearest" });
+}
+
+function answerQuiz(quizQuestion, chosenIndex, optionButtons, result) {
+  for (let i = 0; i < optionButtons.length; i++) {
+    optionButtons[i].disabled = true;
+    if (i === quizQuestion.correctIndex) {
+      optionButtons[i].classList.add("correct");
+      optionButtons[i].textContent = "✓ " + quizQuestion.options[i];
+    } else if (i === chosenIndex) {
+      optionButtons[i].textContent = "✗ " + quizQuestion.options[i];
+    }
+  }
+  result.textContent =
+    chosenIndex === quizQuestion.correctIndex
+      ? "Вярно! Натисни „Напред“ и виж."
+      : "Не точно. Правилният отговор е отбелязан с ✓.";
+}
+
 // ---------- New array ----------
 
 function useNewRandomArray() {
@@ -500,6 +565,7 @@ function wirePlayerControls() {
   document.getElementById("play-button").addEventListener("click", togglePlayback);
   document.getElementById("speed").addEventListener("input", applySwapSpeed);
   document.getElementById("random-button").addEventListener("click", useNewRandomArray);
+  document.getElementById("quiz-button").addEventListener("click", showQuiz);
   document.addEventListener("keydown", handlePlayerKeys);
   applySwapSpeed();
 }

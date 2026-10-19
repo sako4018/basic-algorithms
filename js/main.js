@@ -78,7 +78,7 @@ function createLessonCard(lesson) {
   if (isLessonReady(lesson)) {
     const action = document.createElement("span");
     action.className = "lesson-card-action";
-    action.textContent = "Започни →";
+    action.textContent = isLessonDone(lesson.id) ? "✓ Пройден · Отвори →" : "Започни →";
     card.appendChild(action);
     card.addEventListener("click", function () {
       showLesson(lesson);
@@ -100,7 +100,8 @@ function createLevelSection(level) {
 
   const heading = document.createElement("h2");
   heading.className = "level-title";
-  heading.textContent = level.title;
+  heading.textContent =
+    level.title + " · " + countDoneLessons(level.lessons) + " / " + level.lessons.length;
   section.appendChild(heading);
 
   const grid = document.createElement("div");
@@ -131,6 +132,7 @@ function showLesson(lesson) {
 
 function showHome() {
   closeLesson();
+  renderLevels();
   lessonScreen.hidden = true;
   homeScreen.hidden = false;
   window.scrollTo(0, 0);
