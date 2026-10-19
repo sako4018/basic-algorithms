@@ -82,7 +82,7 @@ function pickLinearSearchTarget(arr) {
   return arr[randomIndex];
 }
 
-function compareCountText(compareCount) {
+function linearSearchCompareText(compareCount) {
   if (compareCount === 1) {
     return "1 сравнение";
   }
@@ -119,13 +119,13 @@ function buildLinearSearchSteps(input) {
     if (arr[i] === target) {
       addStep([2, 3], [i], "Проверявам позиция " + i + ": " + arr[i] + " = " + target + ". Намерихме го!", vars);
       foundIndexes.push(i);
-      addStep([4], [], "Готово! Числото " + target + " е на позиция " + i + ". Направихме " + compareCountText(compareCount) + ".", vars);
+      addStep([4], [], "Готово! Числото " + target + " е на позиция " + i + ". Направихме " + linearSearchCompareText(compareCount) + ".", vars);
       return steps;
     }
 
     addStep([2, 3], [i], "Проверявам позиция " + i + ": " + arr[i] + " ≠ " + target + ", продължавам нататък.", vars);
   }
 
-  addStep([7], [], "Готово! Минахме целия масив с " + compareCountText(compareCount) + " и не намерихме " + target + ". Връщаме -1.", { target: target });
+  addStep([7], [], "Готово! Минахме целия масив с " + linearSearchCompareText(compareCount) + " и не намерихме " + target + ". Връщаме -1.", { target: target });
   return steps;
 }
