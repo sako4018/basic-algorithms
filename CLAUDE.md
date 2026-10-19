@@ -38,6 +38,11 @@ Goal: any file can be opened, understood, and fixed by hand without tooling.
 - Comments only where the "why" isn't obvious.
 - Step `lines` are 1-based and point at lines of the lesson's JS `code`. If you edit a lesson's code (any language), re-check every line number and the `lineMap` of the other languages.
 
+## Checks and docs
+
+- After touching any lesson or `player.js`, run `node tests/validate-lessons.js` (must print `ALL OK`), then open the lesson in Safari. C, C++ and Java code is only syntax-checked; it has never been run on this Mac (broken linker, no JDK).
+- Details in `docs/`: `ARCHITECTURE.md` (how it works), `TASKS.md` (open work with IDs and statuses), `ROADMAP.md`, `DECISIONS.md`, `TESTING.md`. Keep `TASKS.md` statuses honest; mark a task done only after it was checked.
+
 ## Repo
 
 - Remote: https://github.com/sako4018/basic-algorithms, branch `master`.

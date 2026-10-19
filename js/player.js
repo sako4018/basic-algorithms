@@ -20,6 +20,13 @@ let playerControlsWired = false;
 // moves the two real bars instead of redrawing them.
 let barItems = [];
 
+// Lessons that are not plain bars (stack, graph, two rows...) set
+// `view: "name"` and a file in js/views/ registers STEP_VIEWS.name =
+// { render(container, step) }. The player then draws that view into
+// #extra-view instead of the bars. A lesson may also have makeInput()
+// (returns the data for buildSteps); the default is a random array.
+const STEP_VIEWS = {};
+
 // ---------- Opening and closing a lesson ----------
 
 function openLesson(lesson) {
@@ -29,7 +36,23 @@ function openLesson(lesson) {
   renderCodeTabs();
   renderCode();
   wirePlayerControls();
-  useArray(makeRandomArray());
+  chooseLessonView();
+  useArray(makeLessonInput());
+}
+
+function lessonView() {
+  return playerLesson && playerLesson.view ? STEP_VIEWS[playerLesson.view] : null;
+}
+
+// Shows #bars or #extra-view, depending on the lesson.
+function chooseLessonView() {
+  const hasView = lessonView() !== null;
+  document.getElementById("bars").hidden = hasView;
+  document.getElementById("extra-view").hidden = !hasView;
+}
+
+function makeLessonInput() {
+  return playerLesson.makeInput ? playerLesson.makeInput() : makeRandomArray();
 }
 
 function closeLesson() {
@@ -39,7 +62,9 @@ function closeLesson() {
 function useArray(values) {
   stopPlayback();
   playerSteps = playerLesson.buildSteps(values);
-  createBars(values);
+  if (lessonView() === null) {
+    createBars(values);
+  }
   showStep(0);
 }
 
@@ -57,7 +82,12 @@ function makeRandomArray() {
 function showStep(stepIndex) {
   playerStepIndex = stepIndex;
   const step = playerSteps[stepIndex];
-  renderBars(step);
+  const view = lessonView();
+  if (view) {
+    view.render(document.getElementById("extra-view"), step);
+  } else {
+    renderBars(step);
+  }
   renderActiveCodeLines(step.lines);
   renderVariables(step.vars);
   document.getElementById("step-text").textContent = step.text;
@@ -430,7 +460,7 @@ function goToNextStep() {
 // ---------- New array ----------
 
 function useNewRandomArray() {
-  useArray(makeRandomArray());
+  useArray(makeLessonInput());
 }
 
 // ---------- Buttons and keyboard ----------

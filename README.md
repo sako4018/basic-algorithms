@@ -38,4 +38,14 @@ css/style.css       стилове (черна и светла тема)
 js/main.js          списък с уроци, навигация, тема
 js/player.js        общият плейър
 js/lessons/         по един файл за всеки алгоритъм
+tests/              проверка на уроците (Node)
+docs/               архитектура, задачи, план, решения, тестване
 ```
+
+## Проверка
+```bash
+node tests/validate-lessons.js
+```
+Проверява стъпките на всички уроци и редовете на кода на петте езика. Нужен е само Node. Подробности — `docs/TESTING.md`.
+
+Останалата документация: `docs/ARCHITECTURE.md`, `docs/TASKS.md`, `docs/ROADMAP.md`, `docs/DECISIONS.md`.
