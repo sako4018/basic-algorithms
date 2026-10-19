@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-All lessons from `PLAN.md` are built (19): loop trace, minimum, maximum, sum, count, linear and binary search, bubble, selection, insertion, merge and quick sort, recursion (factorial, Hanoi), sort comparison, stack and queue, BFS, DFS, Dijkstra. Lessons that are not bars use a view in `js/views/` (see `docs/ARCHITECTURE.md`). Saved progress (`js/progress.js`) and the "Провери се" quiz (`js/quiz.js`) are built. Still to do: GitHub Pages and the push to GitHub, both need the user's approval (see `docs/TASKS.md`). The look follows `TASTE.md`. `PLAN.md` (in Bulgarian) has the lesson format, the algorithm list per level and the remaining stages.
+All lessons from `PLAN.md` are built (19): loop trace, minimum, maximum, sum, count, linear and binary search, bubble, selection, insertion, merge and quick sort, recursion (factorial, Hanoi), sort comparison, stack and queue, BFS, DFS, Dijkstra. Lessons that are not bars use a view in `js/views/` (see `docs/ARCHITECTURE.md`). Saved progress (`js/progress.js`) and the "Провери се" quiz (`js/quiz.js`) are built. The site is live on GitHub Pages (https://sako4018.github.io/basic-algorithms/, served from `master` / root, so every push to `master` updates it). Open work is in `docs/TASKS.md`. The look follows `TASTE.md`. `PLAN.md` (in Bulgarian) has the lesson format, the algorithm list per level and the remaining stages.
 
 ## What this is
 
@@ -19,9 +19,9 @@ An interactive algorithm visualizer for students aged 12–16. Each lesson shows
 - Plain HTML + CSS + vanilla JavaScript, no frameworks, no npm, no build step. The lesson's main `code` is JavaScript and steps point at its lines. Each lesson also has `otherLanguages` (c, cpp, csharp, java, python): the same algorithm with the same variable names, plus an optional `lineMap` from JS line numbers to that language's lines. When you edit a lesson, update every language and re-check the line mapping. Rationale and rejected options are in `PLAN.md` → "Технология".
 - Do NOT pick tech or simplify code based on the students' skill level. The only criteria are: the code is easy to read, easy to edit, and the user (Sarkis) can open any file and fix it himself.
 - Must work when `index.html` is opened directly from disk (`open index.html` → Safari), so avoid ES module imports or `fetch` of local files that break under `file://`; load scripts with plain `<script>` tags.
-- Intended to be hosted on GitHub Pages later.
+- Hosted on GitHub Pages from `master` (root); a push to `master` publishes the site.
 
-## Planned architecture
+## Architecture
 
 The core idea, which spans all lessons: **each algorithm does not animate itself.** A lesson file in `js/lessons/` runs the algorithm on the input array and produces a precomputed list of step objects (which elements to highlight/swap, which code line is active, current variable values, compare/swap counts, explanation text). The counts are not shown on screen any more; lessons use them in the final "Готово!" text. The shared player in `js/player.js` only renders a given step and handles step forward / step back, optional play / pause and the swap animation speed. Because steps are precomputed, stepping backward is just showing the previous step. Adding an algorithm = adding one lesson file that emits steps.
 
