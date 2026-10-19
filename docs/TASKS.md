@@ -16,6 +16,7 @@
 | D-06 | T-02 урок „Проследяване на цикъл и условие“ | ✅ валидатор + DOM |
 | D-07 | T-03 рекурсия: факториел и Ханойски кули със стек (`views/stack-view.js`) | ✅ валидатор + DOM; една снимка на Ханой |
 | D-08 | T-04 сравнение bubble и merge sort (`views/compare-view.js`) | ✅ валидатор + DOM |
+| D-10 | Минимум, максимум, сума и брой са 4 отделни урока в Ниво 1 (вместо „min и max“ и „сума и брой“), 19.10.2026 | ✅ валидатор + DOM |
 | D-09 | T-05 стек и опашка, BFS, DFS, Dijkstra (`views/stack-queue-view.js`, `views/graph-view.js`, `data/graph-data.js`) | ✅ валидатор (Dijkstra срещу Bellman-Ford) + DOM; снимка на Dijkstra |
 
 ## Отворени

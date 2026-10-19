@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-All lessons from `PLAN.md` are built (17): loop trace, min/max, sum and count, linear and binary search, bubble, selection, insertion, merge and quick sort, recursion (factorial, Hanoi), sort comparison, stack and queue, BFS, DFS, Dijkstra. Lessons that are not bars use a view in `js/views/` (see `docs/ARCHITECTURE.md`). Still to do: progress and "провери се" tests, GitHub Pages, and looking at the new views on screen (see `docs/TASKS.md`). The look follows `TASTE.md`. `PLAN.md` (in Bulgarian) has the lesson format, the algorithm list per level and the remaining stages.
+All lessons from `PLAN.md` are built (19): loop trace, minimum, maximum, sum, count, linear and binary search, bubble, selection, insertion, merge and quick sort, recursion (factorial, Hanoi), sort comparison, stack and queue, BFS, DFS, Dijkstra. Lessons that are not bars use a view in `js/views/` (see `docs/ARCHITECTURE.md`). Still to do: progress and "провери се" tests, GitHub Pages, and looking at the new views on screen (see `docs/TASKS.md`). The look follows `TASTE.md`. `PLAN.md` (in Bulgarian) has the lesson format, the algorithm list per level and the remaining stages.
 
 ## What this is
 

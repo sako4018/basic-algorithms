@@ -20,8 +20,10 @@ open index.html
 
 ## Уроци
 - Проследяване на цикъл и условие
-- Минимум и максимум (min и max)
-- Сума и брой (sum и count)
+- Минимум (minimum)
+- Максимум (maximum)
+- Сума (sum)
+- Брой (count)
 - Линейно търсене (linear search)
 - Двоично търсене (binary search)
 - Сортиране чрез мехурчета (bubble sort)
