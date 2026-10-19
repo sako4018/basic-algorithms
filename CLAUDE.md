@@ -25,7 +25,7 @@ An interactive algorithm visualizer for students aged 12–16. Each lesson shows
 
 The core idea, which spans all lessons: **each algorithm does not animate itself.** A lesson file in `js/lessons/` runs the algorithm on the input array and produces a precomputed list of step objects (which elements to highlight/swap, which code line is active, current variable values, compare/swap counts, explanation text). The counts are not shown on screen any more; lessons use them in the final "Готово!" text. The shared player in `js/player.js` only renders a given step and handles step forward / step back, optional play / pause and the swap animation speed. Because steps are precomputed, stepping backward is just showing the previous step. Adding an algorithm = adding one lesson file that emits steps.
 
-Lesson progress and quiz results are stored in `localStorage`.
+Lesson progress and quiz results will be stored in `localStorage` (planned, stage 5). Today only the theme (`theme`) and the chosen code language (`codeLanguage`) are stored there.
 
 ## Code style
 
@@ -36,7 +36,7 @@ Goal: any file can be opened, understood, and fixed by hand without tooling.
 - Plain functions and global variables loaded via `<script>` tags in `index.html`. No modules, no libraries; classes only if they clearly help.
 - Descriptive names (`compareCount`, not `cc`), functions around 30 lines max, `const`/`let`, no clever one-liners.
 - Comments only where the "why" isn't obvious.
-- Step `lines` are 1-based and must match the lesson's displayed code lines. If you edit a lesson's code array, re-check every line number in that lesson.
+- Step `lines` are 1-based and point at lines of the lesson's JS `code`. If you edit a lesson's code (any language), re-check every line number and the `lineMap` of the other languages.
 
 ## Repo
 
