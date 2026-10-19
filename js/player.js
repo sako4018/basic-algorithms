@@ -26,7 +26,8 @@ function openLesson(lesson) {
   stopPlayback();
   playerLesson = lesson;
   document.getElementById("lesson-title").textContent = lesson.title;
-  renderCode(lesson.code);
+  renderCodeTabs();
+  renderCode();
   wirePlayerControls();
   useArray(makeRandomArray());
 }
@@ -164,7 +165,81 @@ function barHeightPercent(value, maxValue) {
   return Math.max(percent, MIN_BAR_HEIGHT_PERCENT);
 }
 
-function renderCode(codeLines) {
+// ---------- Code tabs (C, C++, Java, JS, Python) ----------
+
+const CODE_LANGUAGES = [
+  { id: "c", label: "C" },
+  { id: "cpp", label: "C++" },
+  { id: "java", label: "Java" },
+  { id: "js", label: "JS" },
+  { id: "python", label: "Python" },
+];
+const LANGUAGE_STORAGE_KEY = "codeLanguage";
+
+let codeLanguage = readSavedLanguage();
+
+function readSavedLanguage() {
+  try {
+    return localStorage.getItem(LANGUAGE_STORAGE_KEY) || "js";
+  } catch (error) {
+    return "js";
+  }
+}
+
+function saveLanguage(languageId) {
+  try {
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, languageId);
+  } catch (error) {
+    // Storage can be blocked (private mode); the choice just won't be remembered.
+  }
+}
+
+// Returns { code, lineMap } of the lesson in this language, or null if the
+// lesson doesn't have it. JS is the lesson's own `code`.
+function lessonCodeIn(languageId) {
+  if (languageId === "js") {
+    return { code: playerLesson.code, lineMap: null };
+  }
+  const other = playerLesson.otherLanguages && playerLesson.otherLanguages[languageId];
+  if (!other) {
+    return null;
+  }
+  return { code: other.code, lineMap: other.lineMap || null };
+}
+
+function renderCodeTabs() {
+  const tabsContainer = document.getElementById("code-tabs");
+  tabsContainer.innerHTML = "";
+  if (lessonCodeIn(codeLanguage) === null) {
+    codeLanguage = "js";
+  }
+
+  for (const language of CODE_LANGUAGES) {
+    if (lessonCodeIn(language.id) === null) {
+      continue;
+    }
+    const tab = document.createElement("button");
+    tab.type = "button";
+    tab.className = "code-tab code-tab-" + language.id;
+    tab.textContent = language.label;
+    tab.classList.toggle("active", language.id === codeLanguage);
+    tab.addEventListener("click", function () {
+      chooseCodeLanguage(language.id);
+    });
+    tabsContainer.appendChild(tab);
+  }
+}
+
+function chooseCodeLanguage(languageId) {
+  codeLanguage = languageId;
+  saveLanguage(languageId);
+  renderCodeTabs();
+  renderCode();
+  renderActiveCodeLines(playerSteps[playerStepIndex].lines);
+}
+
+function renderCode() {
+  const codeLines = lessonCodeIn(codeLanguage).code;
   const codeContainer = document.getElementById("code");
   codeContainer.innerHTML = "";
 
@@ -179,7 +254,12 @@ function renderCode(codeLines) {
 
 // ---------- Code colors ----------
 
-const CODE_KEYWORDS = ["function", "for", "while", "if", "else", "return", "let", "const", "var"];
+const CODE_KEYWORDS = [
+  "function", "for", "while", "if", "else", "return", "let", "const", "var",
+  "void", "int", "long", "static", "def", "in", "and", "not",
+];
+// The word right after one of these is the function's name.
+const FUNCTION_DECLARATION_WORDS = ["function", "void", "def"];
 // Words, numbers, or any single other character.
 const CODE_TOKEN_PATTERN = /[A-Za-z_]\w*|\d+|\s+|./g;
 
@@ -193,7 +273,7 @@ function appendHighlightedCode(lineElement, codeLine) {
     let tokenClass = "";
     if (CODE_KEYWORDS.includes(token)) {
       tokenClass = "code-keyword";
-    } else if (previousWord === "function" && /^[A-Za-z_]/.test(token)) {
+    } else if (FUNCTION_DECLARATION_WORDS.includes(previousWord) && /^[A-Za-z_]/.test(token)) {
       tokenClass = "code-function";
     } else if (/^\d+$/.test(token)) {
       tokenClass = "code-number";
@@ -213,7 +293,15 @@ function appendHighlightedCode(lineElement, codeLine) {
   }
 }
 
-function renderActiveCodeLines(activeLineNumbers) {
+// Steps name lines of the JS code; lineMap turns them into this language's lines.
+function renderActiveCodeLines(jsLineNumbers) {
+  const lineMap = lessonCodeIn(codeLanguage).lineMap;
+  let activeLineNumbers = [];
+  for (const jsLine of jsLineNumbers) {
+    const mapped = lineMap && lineMap[jsLine] ? lineMap[jsLine] : [jsLine];
+    activeLineNumbers = activeLineNumbers.concat(mapped);
+  }
+
   const lines = document.querySelectorAll("#code .code-line");
   for (let index = 0; index < lines.length; index++) {
     const lineNumber = index + 1;

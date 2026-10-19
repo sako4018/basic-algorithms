@@ -18,7 +18,7 @@
   --code-text: #f2f2f2;
   --code-active: #2c2c2c;
   --code-border: #c47f45;
-  --code-tab-bg: #f0db4f;
+  --code-tab-inactive: #2e2e2e;
   --code-keyword: #5ff3f3;
   --code-function: #f2cf86;
   --code-number: #d466e8;
@@ -44,7 +44,7 @@
   --code-text: #f2f2f2;
   --code-active: #2c2c2c;
   --code-border: #c47f45;
-  --code-tab-bg: #f0db4f;
+  --code-tab-inactive: #2e2e2e;
   --code-keyword: #5ff3f3;
   --code-function: #f2cf86;
   --code-number: #d466e8;
@@ -387,15 +387,32 @@ input:focus-visible {
   display: flex;
 }
 
+/* Inactive tabs are gray boxes; the active one has the code's background, so
+   it looks joined to the code like in the reference. */
 .code-tab {
-  padding: 8px 18px;
-  font: 700 0.95rem "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  color: #000000;
-  background: var(--code-tab-bg);
+  padding: 8px 14px;
+  border: none;
   border-right: 2px solid var(--code-border);
   border-bottom: 2px solid var(--code-border);
+  background: var(--code-tab-inactive);
+  font: 800 0.9rem "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  cursor: pointer;
+}
+
+.code-tab:last-child {
   border-bottom-right-radius: 10px;
 }
+
+.code-tab.active {
+  background: var(--code-bg);
+  border-bottom-color: transparent;
+}
+
+.code-tab-c { color: #8e8cf0; }
+.code-tab-cpp { color: #6fa8f5; }
+.code-tab-java { color: #f0743e; }
+.code-tab-js { color: #f0db4f; }
+.code-tab-python { color: #ffd343; }
 
 #code {
   padding: 20px 0 24px;
