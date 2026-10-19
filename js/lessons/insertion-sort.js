@@ -23,6 +23,70 @@ const insertionSortLesson = {
     "  return arr;",
     "}",
   ],
+  // The same algorithm in the other languages of the code tabs. Steps point
+  // at lines of `code` (JS); `lineMap` turns a JS line into this language's
+  // lines when they differ. Keep both in sync when editing.
+  otherLanguages: {
+    c: {
+      code: [
+        "void insertionSort(int arr[], int n) {",
+        "  for (int i = 1; i < n; i++) {",
+        "    int current = arr[i];",
+        "    int j = i - 1;",
+        "    while (j >= 0 && arr[j] > current) {",
+        "      arr[j + 1] = arr[j];",
+        "      j--;",
+        "    }",
+        "    arr[j + 1] = current;",
+        "  }",
+        "}",
+      ],
+    },
+    cpp: {
+      code: [
+        "void insertionSort(vector<int>& arr) {",
+        "  for (int i = 1; i < (int)arr.size(); i++) {",
+        "    int current = arr[i];",
+        "    int j = i - 1;",
+        "    while (j >= 0 && arr[j] > current) {",
+        "      arr[j + 1] = arr[j];",
+        "      j--;",
+        "    }",
+        "    arr[j + 1] = current;",
+        "  }",
+        "}",
+      ],
+    },
+    java: {
+      code: [
+        "static void insertionSort(int[] arr) {",
+        "  for (int i = 1; i < arr.length; i++) {",
+        "    int current = arr[i];",
+        "    int j = i - 1;",
+        "    while (j >= 0 && arr[j] > current) {",
+        "      arr[j + 1] = arr[j];",
+        "      j--;",
+        "    }",
+        "    arr[j + 1] = current;",
+        "  }",
+        "}",
+      ],
+    },
+    python: {
+      code: [
+        "def insertion_sort(arr):",
+        "    for i in range(1, len(arr)):",
+        "        current = arr[i]",
+        "        j = i - 1",
+        "        while j >= 0 and arr[j] > current:",
+        "            arr[j + 1] = arr[j]",
+        "            j -= 1",
+        "        arr[j + 1] = current",
+        "    return arr",
+      ],
+      lineMap: { 9: [8], 11: [9] },
+    },
+  },
   buildSteps: buildInsertionSortSteps,
 };
 
