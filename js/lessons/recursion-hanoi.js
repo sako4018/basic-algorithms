@@ -48,6 +48,19 @@ const recursionHanoiLesson = {
         "}",
       ],
     },
+    csharp: {
+      code: [
+        "static void hanoi(int n, char source, char target, char spare) {",
+        "  if (n == 1) {",
+        "    Console.WriteLine(\"Disk 1: \" + source + \" -> \" + target);",
+        "    return;",
+        "  }",
+        "  hanoi(n - 1, source, spare, target);",
+        "  Console.WriteLine(\"Disk \" + n + \": \" + source + \" -> \" + target);",
+        "  hanoi(n - 1, spare, target, source);",
+        "}",
+      ],
+    },
     java: {
       code: [
         "static void hanoi(int n, char source, char target, char spare) {",
