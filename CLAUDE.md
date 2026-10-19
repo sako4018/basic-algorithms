@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-All lessons from `PLAN.md` are built (19): loop trace, minimum, maximum, sum, count, linear and binary search, bubble, selection, insertion, merge and quick sort, recursion (factorial, Hanoi), sort comparison, stack and queue, BFS, DFS, Dijkstra. Lessons that are not bars use a view in `js/views/` (see `docs/ARCHITECTURE.md`). Still to do: progress and "провери се" tests, GitHub Pages, and looking at the new views on screen (see `docs/TASKS.md`). The look follows `TASTE.md`. `PLAN.md` (in Bulgarian) has the lesson format, the algorithm list per level and the remaining stages.
+All lessons from `PLAN.md` are built (19): loop trace, minimum, maximum, sum, count, linear and binary search, bubble, selection, insertion, merge and quick sort, recursion (factorial, Hanoi), sort comparison, stack and queue, BFS, DFS, Dijkstra. Lessons that are not bars use a view in `js/views/` (see `docs/ARCHITECTURE.md`). Saved progress (`js/progress.js`) and the "Провери се" quiz (`js/quiz.js`) are built. Still to do: GitHub Pages and the push to GitHub, both need the user's approval (see `docs/TASKS.md`). The look follows `TASTE.md`. `PLAN.md` (in Bulgarian) has the lesson format, the algorithm list per level and the remaining stages.
 
 ## What this is
 
@@ -25,7 +25,7 @@ An interactive algorithm visualizer for students aged 12–16. Each lesson shows
 
 The core idea, which spans all lessons: **each algorithm does not animate itself.** A lesson file in `js/lessons/` runs the algorithm on the input array and produces a precomputed list of step objects (which elements to highlight/swap, which code line is active, current variable values, compare/swap counts, explanation text). The counts are not shown on screen any more; lessons use them in the final "Готово!" text. The shared player in `js/player.js` only renders a given step and handles step forward / step back, optional play / pause and the swap animation speed. Because steps are precomputed, stepping backward is just showing the previous step. Adding an algorithm = adding one lesson file that emits steps.
 
-Lesson progress and quiz results will be stored in `localStorage` (planned, stage 5). Today only the theme (`theme`) and the chosen code language (`codeLanguage`) are stored there.
+`localStorage` holds the theme (`theme`), the chosen code language (`codeLanguage`) and the ids of finished lessons (`doneLessons`). Always read and write it inside `try/catch`.
 
 ## Code style
 
@@ -40,7 +40,7 @@ Goal: any file can be opened, understood, and fixed by hand without tooling.
 
 ## Checks and docs
 
-- After touching any lesson or `player.js`, run `node tests/validate-lessons.js` (must print `ALL OK`), then open the lesson in Safari. C, C++ and Java code is only syntax-checked; it has never been run on this Mac (broken linker, no JDK).
+- After touching any lesson or `player.js`, run `node tests/validate-lessons.js` and `node tests/test-progress-quiz.js` (both must print `ALL OK`), then open the lesson in Safari. C, C++ and Java code is really compiled and run by `node tests/run-other-languages.js c|cpp|java` (needs `SDKROOT` for the older SDK and a JDK; see `docs/TESTING.md`).
 - Details in `docs/`: `ARCHITECTURE.md` (how it works), `TASKS.md` (open work with IDs and statuses), `ROADMAP.md`, `DECISIONS.md`, `TESTING.md`. Keep `TASKS.md` statuses honest; mark a task done only after it was checked.
 
 ## Repo

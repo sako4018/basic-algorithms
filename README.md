@@ -45,6 +45,8 @@ index.html          начален екран и екран на урока
 css/style.css       стилове (черна и светла тема)
 js/main.js          списък с уроци, навигация, тема
 js/player.js        общият плейър
+js/progress.js      запомня пройдените уроци
+js/quiz.js          въпросите „Провери се“
 js/lessons/         по един файл за всеки алгоритъм
 js/views/           изгледи за стек, сравнение, опашка и граф
 js/data/            общият граф
@@ -56,6 +58,6 @@ docs/               архитектура, задачи, план, решени
 ```bash
 node tests/validate-lessons.js
 ```
-Проверява стъпките на всички уроци и редовете на кода на петте езика. Нужен е само Node. Подробности — `docs/TESTING.md`.
+Проверява стъпките на всички уроци и редовете на кода на петте езика. Нужен е само Node. Още: `node tests/test-progress-quiz.js` (напредък и „Провери се“) и `node tests/run-other-languages.js c|cpp|java` (истинско пускане на кода). Подробности — `docs/TESTING.md`.
 
 Останалата документация: `docs/ARCHITECTURE.md`, `docs/TASKS.md`, `docs/ROADMAP.md`, `docs/DECISIONS.md`.
