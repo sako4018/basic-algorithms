@@ -20,17 +20,19 @@ for (const [f, n] of names) {
   const L = vm.runInContext(n, ctx);
   console.log(f, n, "steps:");
   for (let run = 0; run < 200; run++) {
-    const arr = Array.from({length: 8}, () => 5 + Math.floor(Math.random() * 95));
-    if (run % 10 === 0) { arr[1] = arr[0]; arr[5] = arr[4]; } // duplicates
-    if (run === 1) arr.sort((a,b)=>a-b);
-    if (run === 2) arr.sort((a,b)=>b-a);
+    // Lessons with their own view/makeInput are checked on their own input.
+    const custom = !!(L.view || L.makeInput);
+    const arr = custom && L.makeInput ? L.makeInput() : Array.from({length: 8}, () => 5 + Math.floor(Math.random() * 95));
+    if (!custom && run % 10 === 0) { arr[1] = arr[0]; arr[5] = arr[4]; } // duplicates
+    if (!custom && run === 1) arr.sort((a,b)=>a-b);
+    if (!custom && run === 2) arr.sort((a,b)=>b-a);
     const steps = L.buildSteps(arr.slice());
     const sortedInput = [...arr].sort((a,b)=>a-b);
     steps.forEach((s, i) => {
       const where = `${f} run${run} step${i}`;
-      if (s.bars.length !== 8) bad(where + " bars length");
+      if (!custom && s.bars.length !== 8) bad(where + " bars length");
       for (const k of ["highlight","sorted","lines"]) if (!Array.isArray(s[k])) bad(where + " " + k + " not array");
-      [...s.highlight, ...s.sorted].forEach(x => { if (!(x >= 0 && x < 8)) bad(where + " index " + x); });
+      [...s.highlight, ...s.sorted].forEach(x => { if (!custom && !(x >= 0 && x < 8)) bad(where + " index " + x); });
       const langs = { js: [L.code, null], ...Object.fromEntries(Object.entries(L.otherLanguages||{}).map(([k,v])=>[k,[v.code,v.lineMap||null]])) };
       for (const [lang,[code,map]] of Object.entries(langs)) for (const ln of s.lines) {
         const mapped = map && map[ln] ? map[ln] : [ln];
