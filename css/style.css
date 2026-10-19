@@ -14,11 +14,14 @@
   --bar-highlight: #f5c518;
   --bar-swapped: #ff5c5c;
   --bar-sorted: #3ddc84;
-  --code-bg: #0b0b0b;
-  --code-text: #9a9a9a;
-  --code-active: #1f1f1f;
-  --code-active-text: #ffffff;
-  --code-active-border: #f5c518;
+  --code-bg: #171717;
+  --code-text: #f2f2f2;
+  --code-active: #2c2c2c;
+  --code-border: #c47f45;
+  --code-tab-bg: #f0db4f;
+  --code-keyword: #5ff3f3;
+  --code-function: #f2cf86;
+  --code-number: #d466e8;
   color-scheme: dark;
 }
 
@@ -37,11 +40,14 @@
   --bar-highlight: #e0a800;
   --bar-swapped: #e5484d;
   --bar-sorted: #1fa463;
-  --code-bg: #f6f6f6;
-  --code-text: #555555;
-  --code-active: #fff3c4;
-  --code-active-text: #111111;
-  --code-active-border: #e0a800;
+  --code-bg: #171717;
+  --code-text: #f2f2f2;
+  --code-active: #2c2c2c;
+  --code-border: #c47f45;
+  --code-tab-bg: #f0db4f;
+  --code-keyword: #5ff3f3;
+  --code-function: #f2cf86;
+  --code-number: #d466e8;
   color-scheme: light;
 }
 
@@ -368,14 +374,35 @@ input:focus-visible {
 
 /* ---------- Code ---------- */
 
-#code {
+/* Looks like the reference Sarkis picked: dark box with a copper border,
+   a language tab on top, big bold monospace text and colored keywords. */
+.code-panel {
+  border: 2px solid var(--code-border);
+  border-radius: 14px;
   background: var(--code-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px 0;
+  overflow: hidden;
+}
+
+.code-tabs {
+  display: flex;
+}
+
+.code-tab {
+  padding: 8px 18px;
+  font: 700 0.95rem "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  color: #000000;
+  background: var(--code-tab-bg);
+  border-right: 2px solid var(--code-border);
+  border-bottom: 2px solid var(--code-border);
+  border-bottom-right-radius: 10px;
+}
+
+#code {
+  padding: 20px 0 24px;
   overflow-x: auto;
   font-family: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  font-size: 0.85rem;
+  font-size: 0.86rem;
+  font-weight: 600;
   line-height: 1.75;
   color: var(--code-text);
 }
@@ -385,24 +412,28 @@ input:focus-visible {
   min-width: 100%;
   width: max-content;
   white-space: pre;
-  padding: 0 16px 0 0;
+  padding: 0 14px;
   border-left: 3px solid transparent;
 }
 
 .code-line.active {
   background: var(--code-active);
-  color: var(--code-active-text);
-  border-left-color: var(--code-active-border);
+  border-left-color: var(--code-border);
 }
 
-.line-number {
-  display: inline-block;
-  width: 2.6em;
-  padding-right: 1em;
-  text-align: right;
-  color: var(--text-faint);
-  user-select: none;
-  -webkit-user-select: none;
+.code-keyword {
+  color: var(--code-keyword);
+  font-style: italic;
+  font-weight: 800;
+}
+
+.code-function {
+  color: var(--code-function);
+  font-weight: 800;
+}
+
+.code-number {
+  color: var(--code-number);
 }
 
 /* ---------- Variables ---------- */
