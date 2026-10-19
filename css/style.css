@@ -1,79 +1,48 @@
-/* ---------- Colors (light theme by default) ---------- */
+/* ---------- Colors (black theme by default) ---------- */
 
 :root {
-  --bg: #f5f6fa;
-  --surface: #ffffff;
-  --surface-muted: #eef0f5;
-  --border: #dfe2ea;
-  --text: #1c1f2a;
-  --text-muted: #5f6577;
-  --accent: #4f5bd5;
-  --accent-hover: #3e49b8;
-  --accent-text: #ffffff;
-  --accent-soft: #e6e8fb;
-  --bar: #8b95e8;
-  --bar-highlight: #f2a93b;
-  --bar-swapped: #e5586a;
-  --bar-sorted: #2fb07a;
-  --bar-text: #ffffff;
-  --code-bg: #f3f4f8;
-  --code-active: #fff1d6;
-  --code-active-border: #f2a93b;
-  --error: #d43c4f;
-  --shadow: 0 1px 3px rgba(20, 24, 40, 0.06), 0 4px 16px rgba(20, 24, 40, 0.05);
-  color-scheme: light;
-}
-
-/* Dark colors: used when the system is dark and the user hasn't picked light,
-   or when the user picked dark with the theme button. Keep both blocks the same. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #12141c;
-    --surface: #1b1e29;
-    --surface-muted: #242838;
-    --border: #2e3346;
-    --text: #e8eaf2;
-    --text-muted: #9aa0b4;
-    --accent: #7c86f0;
-    --accent-hover: #929bf5;
-    --accent-text: #10121a;
-    --accent-soft: #2a2f4f;
-    --bar: #5c66c9;
-    --bar-highlight: #e8a33a;
-    --bar-swapped: #e0576a;
-    --bar-sorted: #2a9e6e;
-    --bar-text: #ffffff;
-    --code-bg: #161923;
-    --code-active: #3b3220;
-    --code-active-border: #e8a33a;
-    --error: #ff7083;
-    --shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.25);
-    color-scheme: dark;
-  }
-}
-
-:root[data-theme="dark"] {
-  --bg: #12141c;
-  --surface: #1b1e29;
-  --surface-muted: #242838;
-  --border: #2e3346;
-  --text: #e8eaf2;
-  --text-muted: #9aa0b4;
-  --accent: #7c86f0;
-  --accent-hover: #929bf5;
-  --accent-text: #10121a;
-  --accent-soft: #2a2f4f;
-  --bar: #5c66c9;
-  --bar-highlight: #e8a33a;
-  --bar-swapped: #e0576a;
-  --bar-sorted: #2a9e6e;
-  --bar-text: #ffffff;
-  --code-bg: #161923;
-  --code-active: #3b3220;
-  --code-active-border: #e8a33a;
-  --error: #ff7083;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.25);
+  --bg: #000000;
+  --surface: #0b0b0b;
+  --border: #222222;
+  --border-strong: #3a3a3a;
+  --text: #ededed;
+  --text-muted: #8a8a8a;
+  --text-faint: #4d4d4d;
+  --button-bg: #ededed;
+  --button-text: #000000;
+  --bar: #3a3a3a;
+  --bar-highlight: #f5c518;
+  --bar-swapped: #ff5c5c;
+  --bar-sorted: #3ddc84;
+  --code-bg: #0b0b0b;
+  --code-text: #9a9a9a;
+  --code-active: #1f1f1f;
+  --code-active-text: #ffffff;
+  --code-active-border: #f5c518;
   color-scheme: dark;
+}
+
+/* Light colors: only when the user picks them with the theme button. */
+:root[data-theme="light"] {
+  --bg: #ffffff;
+  --surface: #f6f6f6;
+  --border: #e3e3e3;
+  --border-strong: #c4c4c4;
+  --text: #111111;
+  --text-muted: #5c5c5c;
+  --text-faint: #a0a0a0;
+  --button-bg: #111111;
+  --button-text: #ffffff;
+  --bar: #c9c9c9;
+  --bar-highlight: #e0a800;
+  --bar-swapped: #e5484d;
+  --bar-sorted: #1fa463;
+  --code-bg: #f6f6f6;
+  --code-text: #555555;
+  --code-active: #fff3c4;
+  --code-active-text: #111111;
+  --code-active-border: #e0a800;
+  color-scheme: light;
 }
 
 /* ---------- Base ---------- */
@@ -99,18 +68,14 @@ body {
 main {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 16px 48px;
+  padding: 16px 16px 48px;
 }
 
 h1 {
-  font-size: 1.9rem;
+  font-size: 1.8rem;
+  font-weight: 600;
   line-height: 1.2;
-  margin: 0 0 8px;
-}
-
-h2 {
-  font-size: 1rem;
-  margin: 0 0 12px;
+  margin: 0 0 24px;
 }
 
 button,
@@ -132,86 +97,89 @@ input {
 }
 
 .logo {
-  font-weight: 700;
-  font-size: 1.05rem;
+  font-weight: 600;
 }
 
 .logo-accent {
-  color: var(--accent);
+  color: var(--text-muted);
+  font-weight: 400;
 }
 
 .icon-button {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   border: 1px solid var(--border);
-  background: var(--surface);
+  background: none;
   cursor: pointer;
-  font-size: 1.1rem;
 }
 
 .icon-button:hover {
-  border-color: var(--accent);
+  border-color: var(--border-strong);
 }
 
 /* ---------- Buttons ---------- */
 
 .button {
-  padding: 9px 16px;
-  border-radius: 10px;
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: var(--accent-text);
-  font-weight: 600;
+  min-width: 130px;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: 1px solid var(--button-bg);
+  background: var(--button-bg);
+  color: var(--button-text);
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
 }
 
-.button:hover {
-  background: var(--accent-hover);
-  border-color: var(--accent-hover);
-}
-
 .button.secondary {
-  background: var(--surface);
+  background: none;
   color: var(--text);
-  border-color: var(--border);
+  border-color: var(--border-strong);
 }
 
-.button.secondary:hover {
-  border-color: var(--accent);
-  background: var(--surface);
+.button:hover:not(:disabled) {
+  opacity: 0.85;
 }
 
 .button:disabled {
-  opacity: 0.45;
+  opacity: 0.3;
   cursor: default;
 }
 
+.text-button,
 .link-button {
   padding: 4px 0;
   border: none;
   background: none;
-  color: var(--accent);
-  font-weight: 600;
+  color: var(--text-muted);
   cursor: pointer;
-  margin-bottom: 12px;
 }
 
+.text-button:hover,
 .link-button:hover {
-  text-decoration: underline;
+  color: var(--text);
+}
+
+.link-button {
+  margin-bottom: 16px;
 }
 
 button:focus-visible,
 input:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--text);
   outline-offset: 2px;
 }
 
 /* ---------- Home screen ---------- */
 
 .hero {
-  margin-bottom: 32px;
+  margin-bottom: 40px;
+}
+
+.hero h1 {
+  margin-bottom: 8px;
 }
 
 .hero p {
@@ -225,9 +193,10 @@ input:focus-visible {
 }
 
 .level-title {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--text-muted);
 }
 
@@ -245,56 +214,43 @@ input:focus-visible {
   gap: 16px;
   min-height: 110px;
   padding: 16px;
-  border-radius: 14px;
+  border-radius: 10px;
   border: 1px solid var(--border);
-  background: var(--surface);
-  box-shadow: var(--shadow);
+  background: none;
   text-align: left;
   cursor: pointer;
-  transition: transform 0.15s, border-color 0.15s;
+  transition: border-color 0.15s;
 }
 
 .lesson-card:hover:not(:disabled) {
-  transform: translateY(-2px);
-  border-color: var(--accent);
+  border-color: var(--text);
 }
 
 .lesson-card:disabled {
   cursor: default;
-  box-shadow: none;
-  background: var(--surface-muted);
-  color: var(--text-muted);
+  color: var(--text-faint);
 }
 
 .lesson-card-title {
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .lesson-card-action {
-  color: var(--accent);
-  font-weight: 600;
+  color: var(--text-muted);
   font-size: 0.9rem;
 }
 
 .badge {
-  padding: 2px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
   font-size: 0.8rem;
+  color: var(--text-faint);
 }
 
 /* ---------- Lesson screen layout ---------- */
 
-.intro {
-  color: var(--text-muted);
-  max-width: 760px;
-  margin: 0 0 20px;
-}
-
 .lesson-layout {
   display: grid;
   grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-  gap: 16px;
+  gap: 40px;
   align-items: start;
 }
 
@@ -306,145 +262,122 @@ input:focus-visible {
   min-width: 0;
 }
 
-.panel {
-  padding: 16px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  box-shadow: var(--shadow);
-  min-width: 0;
-}
-
-/* ---------- Input ---------- */
-
-.input-panel label {
-  display: block;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-}
-
-.input-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-#array-input {
-  flex: 1 1 180px;
-  min-width: 0;
-  padding: 9px 12px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-}
-
-.error {
-  color: var(--error);
-  font-size: 0.9rem;
-  margin: 8px 0 0;
-}
-
-.error:empty {
-  display: none;
-}
-
 /* ---------- Bars ---------- */
 
+/* Bars are absolutely positioned so a swap can slide them to each other's
+   place. player.js sets left/width and --swap-duration (speed slider). */
 #bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 6px;
-  height: 260px;
-  padding-top: 8px;
+  --swap-duration: 800ms;
+  position: relative;
+  height: 320px;
+  margin-bottom: 28px;
 }
 
 .bar {
-  flex: 1 1 0;
-  min-width: 0;
-  min-height: 24px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 4px;
-  border-radius: 6px 6px 2px 2px;
-  background: var(--bar);
-  color: var(--bar-text);
-  font-size: 0.85rem;
-  font-weight: 600;
-  overflow: hidden;
-  transition: height 0.3s ease, background-color 0.2s;
+  position: absolute;
+  bottom: 0;
+  background-color: var(--bar);
+  border-radius: 4px 4px 0 0;
+  transition:
+    left var(--swap-duration) ease-in-out,
+    bottom var(--swap-duration) ease-in-out,
+    background-color 0.25s;
+}
+
+.bar-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -26px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
 }
 
 .bar.highlight {
-  background: var(--bar-highlight);
+  background-color: var(--bar-highlight);
 }
 
+/* The two swapped bars lift a little so the move is easy to follow. */
 .bar.swapped {
-  background: var(--bar-swapped);
+  background-color: var(--bar-swapped);
+  bottom: 12px;
 }
 
 .bar.sorted {
-  background: var(--bar-sorted);
+  background-color: var(--bar-sorted);
+}
+
+.bar.highlight .bar-label,
+.bar.swapped .bar-label {
+  color: var(--text);
 }
 
 .step-text {
   min-height: 3em;
-  margin: 16px 0 0;
-  font-size: 1.05rem;
+  margin: 8px 0 0;
+  font-size: 1.25rem;
+  line-height: 1.45;
 }
 
 /* ---------- Controls ---------- */
 
 .controls {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 8px;
 }
 
-.control-buttons,
-.control-extra {
+.step-counter {
+  min-width: 70px;
+  text-align: center;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.controls-extra {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-}
-
-.control-extra {
-  gap: 16px;
+  justify-content: center;
+  gap: 8px 24px;
+  font-size: 0.9rem;
 }
 
 .speed-label {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.9rem;
   color: var(--text-muted);
 }
 
 #speed {
-  width: 120px;
-  accent-color: var(--accent);
+  width: 110px;
+  accent-color: var(--text-muted);
 }
 
-.step-counter {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  font-variant-numeric: tabular-nums;
+.hint {
+  margin: 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-faint);
 }
 
 /* ---------- Code ---------- */
 
 #code {
   background: var(--code-bg);
-  border-radius: 10px;
-  padding: 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 0;
   overflow-x: auto;
   font-family: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  font-size: 0.82rem;
-  line-height: 1.6;
+  font-size: 0.85rem;
+  line-height: 1.75;
+  color: var(--code-text);
 }
 
 /* min-width + max-content: the highlight stays full width when long lines scroll */
@@ -452,21 +385,22 @@ input:focus-visible {
   min-width: 100%;
   width: max-content;
   white-space: pre;
-  padding: 0 12px 0 0;
+  padding: 0 16px 0 0;
   border-left: 3px solid transparent;
 }
 
 .code-line.active {
   background: var(--code-active);
+  color: var(--code-active-text);
   border-left-color: var(--code-active-border);
 }
 
 .line-number {
   display: inline-block;
-  width: 2.5em;
-  padding-right: 0.8em;
+  width: 2.6em;
+  padding-right: 1em;
   text-align: right;
-  color: var(--text-muted);
+  color: var(--text-faint);
   user-select: none;
   -webkit-user-select: none;
 }
@@ -482,19 +416,19 @@ input:focus-visible {
 
 .vars-table th,
 .vars-table td {
-  padding: 6px 8px;
+  padding: 6px 4px;
   border-bottom: 1px solid var(--border);
   text-align: left;
 }
 
 .vars-table th {
-  font-weight: 500;
+  font-weight: 400;
   color: var(--text-muted);
   width: 50%;
 }
 
 .vars-table td {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .vars-table tr:last-child th,
@@ -502,28 +436,22 @@ input:focus-visible {
   border-bottom: none;
 }
 
-/* ---------- Counters ---------- */
-
-.counters {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+#vars {
+  color: var(--text-faint);
 }
 
-.counter {
-  display: flex;
-  flex-direction: column;
+/* Keyboard hint only makes sense where there is a mouse/keyboard. */
+@media (hover: none) {
+  .hint {
+    display: none;
+  }
 }
 
-.counter-label {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
-.counter-value {
-  font-size: 1.8rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
+/* "Reduce motion" in system settings: bars jump instead of sliding. */
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    transition: background-color 0.25s;
+  }
 }
 
 /* ---------- Narrow screens (tablet portrait, phone) ---------- */
@@ -531,18 +459,23 @@ input:focus-visible {
 @media (max-width: 800px) {
   .lesson-layout {
     grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
   }
 
   h1 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   #bars {
-    height: 200px;
-    gap: 3px;
+    height: 220px;
   }
 
-  .bar {
-    font-size: 0.7rem;
+  .bar-label {
+    font-size: 0.75rem;
+  }
+
+  .button {
+    min-width: 0;
+    padding: 10px 16px;
   }
 }

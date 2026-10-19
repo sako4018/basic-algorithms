@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Алгоритми стъпка по стъпка</title>
   <link rel="stylesheet" href="css/style.css">
+  <script>
+    // Applies a saved light theme before the first paint, so it doesn't
+    // flash black first. main.js handles the theme button.
+    try {
+      if (localStorage.getItem("theme") === "light") {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    } catch (error) {
+      // Storage can be blocked (private mode); then the page stays black.
+    }
+  </script>
 </head>
 <body>
   <header class="top-bar">
@@ -26,61 +37,32 @@
     <section id="lesson-screen" hidden>
       <button id="back-button" class="link-button" type="button">← Към уроците</button>
       <h1 id="lesson-title"></h1>
-      <p id="lesson-intro" class="intro"></p>
 
       <div class="lesson-layout">
         <div class="lesson-main">
-          <div class="panel input-panel">
-            <label for="array-input">Твоят масив (числа, разделени със запетая)</label>
-            <div class="input-row">
-              <input id="array-input" type="text" inputmode="numeric" autocomplete="off" spellcheck="false">
-              <button id="apply-button" class="button" type="button">Приложи</button>
-              <button id="random-button" class="button secondary" type="button">Случаен</button>
-            </div>
-            <p id="input-error" class="error"></p>
+          <div id="bars"></div>
+          <p id="step-text" class="step-text"></p>
+
+          <div class="controls">
+            <button id="prev-button" class="button secondary" type="button">← Назад</button>
+            <span id="step-counter" class="step-counter"></span>
+            <button id="next-button" class="button" type="button">Напред →</button>
           </div>
 
-          <div class="panel">
-            <div id="bars"></div>
-            <p id="step-text" class="step-text"></p>
+          <div class="controls-extra">
+            <button id="play-button" class="text-button" type="button">▶ Пусни</button>
+            <button id="random-button" class="text-button" type="button">Нов масив</button>
+            <label class="speed-label" for="speed">Скорост на размяната
+              <!-- Right = faster. Swap takes min + max - value ms, so 2000 = 0.8 s. -->
+              <input id="speed" type="range" min="300" max="2500" step="100" value="2000">
+            </label>
           </div>
-
-          <div class="panel controls">
-            <div class="control-buttons">
-              <button id="prev-button" class="button secondary" type="button">⏮ Назад</button>
-              <button id="play-button" class="button" type="button">▶ Пусни</button>
-              <button id="next-button" class="button secondary" type="button">Напред ⏭</button>
-            </div>
-            <div class="control-extra">
-              <label class="speed-label" for="speed">Скорост
-                <input id="speed" type="range" min="1" max="10" value="5">
-              </label>
-              <span id="step-counter" class="step-counter"></span>
-            </div>
-          </div>
+          <p class="hint">Space или → напред, ← назад</p>
         </div>
 
         <aside class="lesson-side">
-          <div class="panel">
-            <h2>Код</h2>
-            <div id="code"></div>
-          </div>
-
-          <div class="panel">
-            <h2>Променливи</h2>
-            <div id="vars"></div>
-          </div>
-
-          <div class="panel counters">
-            <div class="counter">
-              <span class="counter-label">Сравнения</span>
-              <span id="compare-count" class="counter-value">0</span>
-            </div>
-            <div class="counter">
-              <span class="counter-label">Размени</span>
-              <span id="swap-count" class="counter-value">0</span>
-            </div>
-          </div>
+          <div id="code"></div>
+          <div id="vars"></div>
         </aside>
       </div>
     </section>
