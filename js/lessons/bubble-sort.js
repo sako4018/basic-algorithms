@@ -23,6 +23,69 @@ const bubbleSortLesson = {
     "  return arr;",
     "}",
   ],
+  // The same algorithm in the other languages of the code tabs. Steps point
+  // at lines of `code` (JS); `lineMap` turns a JS line into this language's
+  // lines when they differ. Keep both in sync when editing.
+  otherLanguages: {
+    c: {
+      code: [
+        "void bubbleSort(int arr[], int n) {",
+        "  for (int i = 0; i < n - 1; i++) {",
+        "    for (int j = 0; j < n - 1 - i; j++) {",
+        "      if (arr[j] > arr[j + 1]) {",
+        "        int temp = arr[j];",
+        "        arr[j] = arr[j + 1];",
+        "        arr[j + 1] = temp;",
+        "      }",
+        "    }",
+        "  }",
+        "}",
+      ],
+    },
+    cpp: {
+      code: [
+        "void bubbleSort(vector<int>& arr) {",
+        "  for (int i = 0; i < (int)arr.size() - 1; i++) {",
+        "    for (int j = 0; j < (int)arr.size() - 1 - i; j++) {",
+        "      if (arr[j] > arr[j + 1]) {",
+        "        int temp = arr[j];",
+        "        arr[j] = arr[j + 1];",
+        "        arr[j + 1] = temp;",
+        "      }",
+        "    }",
+        "  }",
+        "}",
+      ],
+    },
+    java: {
+      code: [
+        "static void bubbleSort(int[] arr) {",
+        "  for (int i = 0; i < arr.length - 1; i++) {",
+        "    for (int j = 0; j < arr.length - 1 - i; j++) {",
+        "      if (arr[j] > arr[j + 1]) {",
+        "        int temp = arr[j];",
+        "        arr[j] = arr[j + 1];",
+        "        arr[j + 1] = temp;",
+        "      }",
+        "    }",
+        "  }",
+        "}",
+      ],
+    },
+    python: {
+      code: [
+        "def bubble_sort(arr):",
+        "    for i in range(len(arr) - 1):",
+        "        for j in range(len(arr) - 1 - i):",
+        "            if arr[j] > arr[j + 1]:",
+        "                temp = arr[j]",
+        "                arr[j] = arr[j + 1]",
+        "                arr[j + 1] = temp",
+        "    return arr",
+      ],
+      lineMap: { 11: [8] },
+    },
+  },
   buildSteps: buildBubbleSortSteps,
 };
 
