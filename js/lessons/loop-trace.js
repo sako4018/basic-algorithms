@@ -54,6 +54,20 @@ const loopTraceLesson = {
         "}",
       ],
     },
+    csharp: {
+      code: [
+        "static void countBig(int[] arr) {",
+        "  int bigCount = 0;",
+        "  for (int i = 0; i < arr.Length; i++) {",
+        "    int value = arr[i];",
+        "    if (value > 50) {",
+        "      bigCount++;",
+        "    }",
+        "  }",
+        "  Console.WriteLine(\"bigCount = \" + bigCount);",
+        "}",
+      ],
+    },
     java: {
       code: [
         "static void countBig(int[] arr) {",
