@@ -49,6 +49,19 @@ const countLesson = {
         "}",
       ],
     },
+    csharp: {
+      code: [
+        "static void countEven(int[] arr) {",
+        "  int count = 0;",
+        "  for (int i = 0; i < arr.Length; i++) {",
+        "    if (arr[i] % 2 == 0) {",
+        "      count++;",
+        "    }",
+        "  }",
+        "  Console.WriteLine(\"count = \" + count);",
+        "}",
+      ],
+    },
     java: {
       code: [
         "static void countEven(int[] arr) {",

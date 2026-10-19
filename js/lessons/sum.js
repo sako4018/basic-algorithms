@@ -43,6 +43,17 @@ const sumLesson = {
         "}",
       ],
     },
+    csharp: {
+      code: [
+        "static void findSum(int[] arr) {",
+        "  int sum = 0;",
+        "  for (int i = 0; i < arr.Length; i++) {",
+        "    sum = sum + arr[i];",
+        "  }",
+        "  Console.WriteLine(\"sum = \" + sum);",
+        "}",
+      ],
+    },
     java: {
       code: [
         "static void findSum(int[] arr) {",
