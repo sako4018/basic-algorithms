@@ -65,5 +65,28 @@ for (const [f, n] of names) {
   }
   console.log("  languages:", Object.keys(L.otherLanguages||{}).join(","));
 }
+// index.html: every lesson file has a <script> tag, and every local script and
+// stylesheet has the same ?v= number. The number must change whenever a file
+// changes, otherwise browsers (GitHub Pages caches for 10 minutes) mix old and
+// new files and the home screen stays empty.
+{
+  const html = fs.readFileSync(path.join(path.dirname(dir), "..", "index.html"), "utf8");
+  const refs = [...html.matchAll(/(?:src|href)="((?:js|css)\/[^"]+)"/g)].map(m => m[1]);
+  const versions = new Set();
+  for (const ref of refs) {
+    const m = ref.match(/\?v=([\w.-]+)$/);
+    if (!m) bad("index.html: " + ref + " has no ?v= version");
+    else versions.add(m[1]);
+  }
+  if (versions.size > 1) bad("index.html: different ?v= versions: " + [...versions].join(", "));
+  for (const [f] of names) {
+    if (!refs.some(r => r.split("?")[0] === "js/lessons/" + f)) bad("index.html has no <script> for js/lessons/" + f);
+  }
+  for (const r of refs) {
+    const file = path.join(path.dirname(dir), "..", r.split("?")[0]);
+    if (!fs.existsSync(file)) bad("index.html points to a missing file: " + r);
+  }
+  console.log("index.html:", refs.length, "files, version", [...versions].join(","));
+}
 console.log(problems ? problems + " problems" : "ALL OK");
 if (problems) process.exitCode = 1;
