@@ -107,6 +107,7 @@ function createBars(values) {
   for (let index = 0; index < values.length; index++) {
     const bar = document.createElement("div");
     bar.className = "bar";
+    bar.setAttribute("role", "img");
     bar.style.height = barHeightPercent(values[index], maxValue) + "%";
     bar.style.width = barWidthPercent + "%";
 
@@ -137,7 +138,29 @@ function renderBars(step) {
     bar.classList.toggle("highlight", step.highlight.includes(index));
     bar.classList.toggle("swapped", step.swapped && step.highlight.includes(index));
     bar.classList.toggle("sorted", step.sorted.includes(index));
+    // dimmed and marked are optional in a step; missing means none.
+    bar.classList.toggle("dimmed", (step.dimmed || []).includes(index));
+    bar.classList.toggle("marked", (step.marked || []).includes(index));
+    bar.setAttribute("aria-label", barDescription(item.value, step, index));
   }
+}
+
+// Short text alternative of one bar: its number and what it is now.
+function barDescription(value, step, index) {
+  let state = "";
+  if (step.swapped && step.highlight.includes(index)) {
+    state = ", разменя се";
+  } else if (step.highlight.includes(index)) {
+    state = ", сравнява се";
+  } else if (step.sorted.includes(index)) {
+    state = ", на окончателното си място";
+  } else if ((step.dimmed || []).includes(index)) {
+    state = ", изхвърлено";
+  }
+  if ((step.marked || []).includes(index)) {
+    state += ", отбелязано";
+  }
+  return "Позиция " + index + ": " + value + state;
 }
 
 // Gives every bar element its position in this step and returns true, or
@@ -483,6 +506,10 @@ function wirePlayerControls() {
 function handlePlayerKeys(event) {
   // Arrow keys on a focused slider should move the slider, not the lesson.
   if (!isLessonScreenVisible() || event.target.tagName === "INPUT") {
+    return;
+  }
+  // Cmd+Left (Safari back), Alt+Arrow and similar belong to the browser.
+  if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) {
     return;
   }
 

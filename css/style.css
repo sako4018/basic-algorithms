@@ -14,6 +14,7 @@
   --bar-highlight: #f5c518;
   --bar-swapped: #ff5c5c;
   --bar-sorted: #3ddc84;
+  --bar-dimmed-border: #5a5a5a;
   --code-bg: #171717;
   --code-text: #f2f2f2;
   --code-active: #2c2c2c;
@@ -40,6 +41,7 @@
   --bar-highlight: #e0a800;
   --bar-swapped: #e5484d;
   --bar-sorted: #1fa463;
+  --bar-dimmed-border: #a8a8a8;
   --code-bg: #171717;
   --code-text: #f2f2f2;
   --code-active: #2c2c2c;
@@ -299,6 +301,21 @@ input:focus-visible {
   font-size: 0.9rem;
   color: var(--text-muted);
   font-variant-numeric: tabular-nums;
+}
+
+/* Discarded or already checked part: an empty bar with a dashed edge, so
+   it still reads as "grey, not in play" on a washed-out projector. Kept
+   above .highlight so a yellow or red bar stays yellow or red. */
+.bar.dimmed {
+  background-color: transparent;
+  border: 2px dashed var(--bar-dimmed-border);
+  border-bottom: none;
+}
+
+/* A bar we keep track of (current min or max, the pivot): an outline. */
+.bar.marked {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
 }
 
 .bar.highlight {
