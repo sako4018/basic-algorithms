@@ -152,13 +152,13 @@ function buildBinarySearchSteps(input) {
     searchIndexes = binarySearchIndexesBetween(low, high, mid);
     const vars = { target: target, low: low, high: high, mid: mid, "arr[mid]": arr[mid] };
     const roundingNote = (low + high) % 2 === 1 ? " (закръгляме надолу)" : "";
-    addStep([4, 5], [mid], "Между low и high още има числа. Средата е mid = (" + low + " + " + high + ") / 2 = " + mid + roundingNote + ", там е числото " + arr[mid] + ".", vars);
+    addStep([4, 5], [mid], "low ≤ high, значи още има къде да търсим. Средата е mid = (" + low + " + " + high + ") / 2 = " + mid + roundingNote + ", там е числото " + arr[mid] + ".", vars);
 
     compareCount++;
     if (arr[mid] === target) {
       addStep([6], [mid], "Сравнявам " + arr[mid] + " с " + target + ": равни са, намерихме го!", vars);
       searchIndexes = [mid];
-      addStep([7], [], "Готово! Намерихме " + target + " на позиция " + mid + ". Погледнахме само " + checkedCount + " от " + arr.length + " числа и направихме " + compareCount + " сравнения.", vars);
+      addStep([7], [], "Готово! Намерихме " + target + " на позиция " + mid + ". Погледнахме само " + checkedCount + " от " + arr.length + " числа и направихме " + binarySearchCompareText(compareCount) + ".", vars);
       return steps;
     }
 
@@ -167,12 +167,12 @@ function buildBinarySearchSteps(input) {
       addStep([6, 9], [mid], "Сравнявам " + arr[mid] + " с " + target + ": " + arr[mid] + " < " + target + ", значи " + target + " е вдясно от средата.", vars);
       low = mid + 1;
       searchIndexes = binarySearchIndexesBetween(low, high, -1);
-      addStep([10], [], "Изхвърляме лявата половина заедно със средата: low = " + low + ". Търсим от позиция " + low + " до " + high + ".", { target: target, low: low, high: high, mid: mid });
+      addStep([10], [], "Изхвърляме лявата половина заедно със средата: low = " + low + ". " + binarySearchRangeText(low, high), { target: target, low: low, high: high, mid: mid });
     } else {
       addStep([6, 9], [mid], "Сравнявам " + arr[mid] + " с " + target + ": " + arr[mid] + " > " + target + ", значи " + target + " е вляво от средата.", vars);
       high = mid - 1;
       searchIndexes = binarySearchIndexesBetween(low, high, -1);
-      addStep([11, 12], [], "Изхвърляме дясната половина заедно със средата: high = " + high + ". Търсим от позиция " + low + " до " + high + ".", { target: target, low: low, high: high, mid: mid });
+      addStep([11, 12], [], "Изхвърляме дясната половина заедно със средата: high = " + high + ". " + binarySearchRangeText(low, high), { target: target, low: low, high: high, mid: mid });
     }
   }
 
@@ -201,4 +201,19 @@ function binarySearchIndexesBetween(low, high, skippedIndex) {
     }
   }
   return indexes;
+}
+
+// "1 сравнение", but "2 сравнения".
+function binarySearchCompareText(count) {
+  if (count === 1) {
+    return "1 сравнение";
+  }
+  return count + " сравнения";
+}
+
+function binarySearchRangeText(low, high) {
+  if (low === high) {
+    return "Остава само позиция " + low + ".";
+  }
+  return "Търсим от позиция " + low + " до " + high + ".";
 }
