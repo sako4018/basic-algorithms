@@ -24,8 +24,8 @@ const LEVELS = [
     title: "Ниво 3 — прости сортирания",
     lessons: [
       bubbleSortLesson,
-      { title: "Сортиране чрез избор (selection sort)" },
-      { title: "Сортиране чрез вмъкване (insertion sort)" },
+      selectionSortLesson,
+      insertionSortLesson,
     ],
   },
   {
