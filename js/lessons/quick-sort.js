@@ -323,7 +323,9 @@ function buildQuickSortSteps(input) {
 
   addStep([1], [], "Започваме. Масивът още не е подреден. Първо подреждаме целия масив: " + partText(0, arr.length - 1) + ".", { low: 0, high: arr.length - 1 });
   sortPart(0, arr.length - 1);
-  addStep([7], [], "Готово! Масивът е подреден с " + compareCount + " сравнения и " + swapCount + " размени.", {});
+  const compareWord = compareCount === 1 ? " сравнение" : " сравнения";
+  const swapWord = swapCount === 1 ? " размяна" : " размени";
+  addStep([7], [], "Готово! Масивът е подреден с " + compareCount + compareWord + " и " + swapCount + swapWord + ".", {});
 
   return steps;
 }
