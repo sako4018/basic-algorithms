@@ -16,7 +16,7 @@ js/quiz.js            прави въпрос „Провери се“ за т�
 tests/                validate-lessons.js, test-progress-quiz.js, run-other-languages.js (Node)
 ```
 
-Редът на `<script>` в `index.html` има значение: `data/` → уроците → `progress.js` → `quiz.js` → `player.js` → `main.js`. Ако се добавят изгледи, те са след `player.js`, защото `STEP_VIEWS` е `const` там. `main.js` чете глобалните `xxxLesson` още при зареждане.
+Всички `<script>` и `<link>` в `index.html` имат `?v=<число>` (еднакво навсякъде); числото се сменя при всяка промяна на JS/CSS (виж `DECISIONS.md`). Редът на `<script>` в `index.html` има значение: `data/` → уроците → `progress.js` → `quiz.js` → `player.js` → `main.js`. Ако се добавят изгледи, те са след `player.js`, защото `STEP_VIEWS` е `const` там. `main.js` чете глобалните `xxxLesson` още при зареждане.
 
 ## Основна идея
 Алгоритъмът **не се анимира сам**. Уроците изчисляват предварително списък от стъпки, а плейърът само показва стъпка по номер. Затова „Назад“ е просто предишната стъпка.

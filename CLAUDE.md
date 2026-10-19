@@ -19,7 +19,7 @@ An interactive algorithm visualizer for students aged 12–16. Each lesson shows
 - Plain HTML + CSS + vanilla JavaScript, no frameworks, no npm, no build step. The lesson's main `code` is JavaScript and steps point at its lines. Each lesson also has `otherLanguages` (c, cpp, csharp, java, python): the same algorithm with the same variable names, plus an optional `lineMap` from JS line numbers to that language's lines. When you edit a lesson, update every language and re-check the line mapping. Rationale and rejected options are in `PLAN.md` → "Технология".
 - Do NOT pick tech or simplify code based on the students' skill level. The only criteria are: the code is easy to read, easy to edit, and the user (Sarkis) can open any file and fix it himself.
 - Must work when `index.html` is opened directly from disk (`open index.html` → Safari), so avoid ES module imports or `fetch` of local files that break under `file://`; load scripts with plain `<script>` tags.
-- Hosted on GitHub Pages from `master` (root); a push to `master` publishes the site.
+- Hosted on GitHub Pages from `master` (root); a push to `master` publishes the site. GitHub Pages lets browsers cache files for 10 minutes, so every `<script>` and stylesheet in `index.html` has `?v=<number>` (all the same). **Change that number in `index.html` whenever any JS or CSS file changes**, otherwise returning visitors get old and new files mixed and an empty menu. `node tests/validate-lessons.js` checks that all files have the same version and that every lesson has a `<script>`.
 
 ## Architecture
 
