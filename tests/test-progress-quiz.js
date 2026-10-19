@@ -136,7 +136,6 @@ for (let index = 0; index < steps.length - 1; index++) {
 // Every real lesson, many random inputs, every step.
 const lessonContext = { console, Math };
 vm.createContext(lessonContext);
-vm.runInContext(fs.readFileSync(path.join(root, "js/data/graph-data.js"), "utf8"), lessonContext);
 let lessonCount = 0;
 // Load every lesson first: compare-sorts uses the bubble and merge sort lessons.
 const lessonNames = [];
@@ -167,7 +166,7 @@ for (const name of lessonNames) {
     check(quizFor(lessonSteps, lessonSteps.length - 1, Math.random) === null, lesson.id + ": no question on the last step");
   }
 }
-check(lessonCount === 19, "all 19 lessons were tested (got " + lessonCount + ")");
+check(lessonCount === 12, "all 12 lessons were tested (got " + lessonCount + ")");
 
 console.log(failures === 0 ? "ALL OK (" + checks + " checks)" : failures + " FAILED of " + checks + " checks");
 process.exit(failures === 0 ? 0 : 1);

@@ -31,22 +31,10 @@ const LEVELS = [
     ],
   },
   {
-    title: "Ниво 4 — по-бързи сортирания и рекурсия",
+    title: "Ниво 4 — по-бързи сортирания",
     lessons: [
-      recursionFactorialLesson,
-      recursionHanoiLesson,
       mergeSortLesson,
       quickSortLesson,
-      compareSortsLesson,
-    ],
-  },
-  {
-    title: "Ниво 5 — структури и графи",
-    lessons: [
-      stackQueueLesson,
-      bfsLesson,
-      dfsLesson,
-      dijkstraLesson,
     ],
   },
 ];
