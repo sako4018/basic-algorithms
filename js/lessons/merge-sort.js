@@ -276,11 +276,11 @@ function buildMergeSortSteps(input) {
     merging: null,
   };
 
-  addMergeSortStep(state, [1], [], "Започваме. Масивът още не е подреден. Ще подредим целия участък от позиция 0 до " + (state.arr.length - 1) + ".", {}, false);
+  addMergeSortStep(state, [1], [], "Започваме. Ще подредим целия масив (" + positionsText(0, state.arr.length - 1) + ").", {}, false);
   mergeSortSteps(state, 0, state.arr.length - 1);
 
   state.sortedIndexes = indexesFromTo(0, state.arr.length - 1);
-  addMergeSortStep(state, [9], [], "Готово! Масивът е подреден с " + state.compareCount + " сравнения и " + state.writeCount + " записа в масива (тук няма размени: числата се записват наново от временните масиви).", {}, false);
+  addMergeSortStep(state, [9], [], "Готово! Масивът е подреден с " + countText(state.compareCount, "сравнение", "сравнения") + " и " + countText(state.writeCount, "запис", "записа") + " в масива (тук няма размени: числата се записват наново от временните масиви).", {}, false);
   return state.steps;
 }
 
@@ -344,7 +344,7 @@ function compareAndWriteStep(state, merging) {
   } else {
     addMergeSortStep(state, [17, 18], [merging.k, rightPosition], "Сравнявам първите неизползвани числа: " + leftValue + " (лява половина) и " + rightValue + " (дясна). " + leftValue + " > " + rightValue + ", значи " + rightValue + " отива на позиция " + merging.k + ".", mergeVars(merging), false);
     writeValue(state, merging, false);
-    addMergeSortStep(state, [22, 23, 25], [merging.k - 1], "Записах " + rightValue + " на позиция " + (merging.k - 1) + ". Числата от лявата половина се местят с една позиция надясно." + finishedText(state, merging), mergeVars(merging), true);
+    addMergeSortStep(state, [22, 23, 25], [merging.k - 1], "Записах " + rightValue + " на позиция " + (merging.k - 1) + ". " + leftShiftText(merging) + finishedText(state, merging), mergeVars(merging), true);
   }
 }
 
@@ -372,6 +372,16 @@ function writeValue(state, merging, fromLeft) {
   }
   merging.k++;
   state.writeCount++;
+}
+
+// After a number from the right half is written, the unused numbers of the
+// left half are shown one place further right.
+function leftShiftText(merging) {
+  const leftUnused = merging.leftPart.slice(merging.i);
+  if (leftUnused.length === 1) {
+    return "Числото " + leftUnused[0] + " от лявата половина се мести с една позиция надясно.";
+  }
+  return "Числата " + leftUnused.join(", ") + " от лявата половина се местят с една позиция надясно.";
 }
 
 function finishedText(state, merging) {
@@ -444,4 +454,11 @@ function positionsText(left, right) {
     return "позиция " + left;
   }
   return "позиции " + left + "–" + right;
+}
+
+function countText(count, singular, plural) {
+  if (count === 1) {
+    return count + " " + singular;
+  }
+  return count + " " + plural;
 }
