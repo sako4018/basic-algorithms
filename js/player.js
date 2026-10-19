@@ -172,13 +172,44 @@ function renderCode(codeLines) {
     const line = document.createElement("div");
     line.className = "code-line";
 
-    const lineNumber = document.createElement("span");
-    lineNumber.className = "line-number";
-    lineNumber.textContent = index + 1;
-
-    line.appendChild(lineNumber);
-    line.appendChild(document.createTextNode(codeLines[index]));
+    appendHighlightedCode(line, codeLines[index]);
     codeContainer.appendChild(line);
+  }
+}
+
+// ---------- Code colors ----------
+
+const CODE_KEYWORDS = ["function", "for", "while", "if", "else", "return", "let", "const", "var"];
+// Words, numbers, or any single other character.
+const CODE_TOKEN_PATTERN = /[A-Za-z_]\w*|\d+|\s+|./g;
+
+// Splits one line of code into colored pieces: keywords, the function's
+// name and numbers get their own class, everything else stays plain text.
+function appendHighlightedCode(lineElement, codeLine) {
+  const tokens = codeLine.match(CODE_TOKEN_PATTERN) || [];
+  let previousWord = "";
+
+  for (const token of tokens) {
+    let tokenClass = "";
+    if (CODE_KEYWORDS.includes(token)) {
+      tokenClass = "code-keyword";
+    } else if (previousWord === "function" && /^[A-Za-z_]/.test(token)) {
+      tokenClass = "code-function";
+    } else if (/^\d+$/.test(token)) {
+      tokenClass = "code-number";
+    }
+
+    if (tokenClass === "") {
+      lineElement.appendChild(document.createTextNode(token));
+    } else {
+      const span = document.createElement("span");
+      span.className = tokenClass;
+      span.textContent = token;
+      lineElement.appendChild(span);
+    }
+    if (token.trim() !== "") {
+      previousWord = token;
+    }
   }
 }
 
