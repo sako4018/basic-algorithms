@@ -82,6 +82,26 @@ const dfsLesson = {
         "}",
       ],
     },
+    csharp: {
+      code: [
+        "static List<int> dfs(List<List<int>> graph, int start) {",
+        "  List<int> visited = new List<int>();",
+        "  Stack<int> stack = new Stack<int>(new[] { start });",
+        "  while (stack.Count > 0) {",
+        "    int node = stack.Pop();",
+        "    if (!visited.Contains(node)) {",
+        "      visited.Add(node);",
+        "      foreach (int next in graph[node]) {",
+        "        if (!visited.Contains(next)) {",
+        "          stack.Push(next);",
+        "        }",
+        "      }",
+        "    }",
+        "  }",
+        "  return visited;",
+        "}",
+      ],
+    },
     java: {
       code: [
         "static List<Integer> dfs(List<List<Integer>> graph, int start) {",
