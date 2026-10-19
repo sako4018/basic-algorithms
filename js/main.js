@@ -35,6 +35,7 @@ const LEVELS = [
       recursionHanoiLesson,
       mergeSortLesson,
       quickSortLesson,
+      compareSortsLesson,
     ],
   },
   {

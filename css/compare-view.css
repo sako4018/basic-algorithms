@@ -1,0 +1,45 @@
+/* Two rows of bars for the "compare sorts" lesson (js/views/compare-view.js).
+   The bars themselves reuse .bar, .highlight, .swapped, .sorted from style.css. */
+
+.compare-view {
+  margin-bottom: 8px;
+}
+
+.compare-row {
+  margin-bottom: 18px;
+}
+
+.compare-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.compare-name {
+  font-weight: 600;
+}
+
+.compare-counters {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Bars are positioned inside this box; the numbers hang below it. */
+.compare-bars {
+  position: relative;
+  height: 130px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 800px) {
+  .compare-bars {
+    height: 90px;
+  }
+
+  .compare-header {
+    flex-direction: column;
+    gap: 2px;
+  }
+}

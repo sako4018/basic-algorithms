@@ -16,13 +16,27 @@ for (const f of fs.readdirSync(dir).sort()) {
 }
 let problems = 0;
 const bad = (m) => { problems++; console.log("  PROBLEM:", m); };
+// Lessons with view "compare" have s.rows (one entry per sort); check each row.
+function checkCompareRows(s, where) {
+  if (!Array.isArray(s.rows) || s.rows.length !== 2) return bad(where + " rows");
+  s.rows.forEach((r, k) => {
+    if (!r.name || !r.swapsName) bad(where + " row" + k + " name");
+    if (!Array.isArray(r.bars) || r.bars.length !== 8) bad(where + " row" + k + " bars length");
+    for (const key of ["highlight", "sorted"]) {
+      if (!Array.isArray(r[key])) { bad(where + " row" + k + " " + key); continue; }
+      r[key].forEach(x => { if (!(x >= 0 && x < 8)) bad(where + " row" + k + " index " + x); });
+    }
+    if (!(r.compares >= 0 && r.swaps >= 0)) bad(where + " row" + k + " counters");
+  });
+}
 for (const [f, n] of names) {
   const L = vm.runInContext(n, ctx);
   console.log(f, n, "steps:");
   for (let run = 0; run < 200; run++) {
     // A lesson with its own view or input (recursion...) makes its own input
     // and has no bars; the other lessons get a random array of 8 numbers.
-    const ownInput = !!(L.view || L.makeInput);
+    // The compare lesson has a view but still works on 8 bars.
+    const ownInput = !!((L.view && L.view !== "compare") || L.makeInput);
     let input;
     let sortedInput = null;
     if (ownInput) {
@@ -42,6 +56,7 @@ for (const [f, n] of names) {
         if (!Array.isArray(s.bars)) bad(where + " bars not array");
       } else if (s.bars.length !== 8) bad(where + " bars length");
       const barCount = ownInput ? 0 : 8;
+      if (L.view === "compare") checkCompareRows(s, where);
       for (const k of ["highlight","sorted","lines"]) if (!Array.isArray(s[k])) bad(where + " " + k + " not array");
       for (const k of ["dimmed","marked"]) if (s[k] !== undefined && !Array.isArray(s[k])) bad(where + " " + k + " not array");
       [...s.highlight, ...s.sorted, ...(s.dimmed||[]), ...(s.marked||[])].forEach(x => { if (!(x >= 0 && x < barCount)) bad(where + " index " + x); });
@@ -64,7 +79,10 @@ for (const [f, n] of names) {
     });
     const last = steps[steps.length-1];
     if (ownInput && !/^Готово/.test(last.text)) bad(`${f} run${run} last step is not "Готово"`);
-    if (/sort/.test(f) && JSON.stringify(last.bars) !== JSON.stringify(sortedInput)) bad(`${f} run${run} not sorted at end`);
+    if (L.view === "compare") {
+      last.rows.forEach((r, k) => { if (JSON.stringify(r.bars) !== JSON.stringify(sortedInput)) bad(`${f} run${run} row${k} not sorted at end`); });
+      if (JSON.stringify(last.bars) !== JSON.stringify(sortedInput)) bad(`${f} run${run} not sorted at end`);
+    } else if (/sort/.test(f) && JSON.stringify(last.bars) !== JSON.stringify(sortedInput)) bad(`${f} run${run} not sorted at end`);
   }
   console.log("  languages:", Object.keys(L.otherLanguages||{}).join(","));
 }
