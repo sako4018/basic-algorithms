@@ -9,15 +9,15 @@ const LEVELS = [
     title: "Ниво 1 — основи",
     lessons: [
       { title: "Проследяване на цикъл и условие" },
-      { title: "Минимум и максимум в масив" },
-      { title: "Сума и брой" },
+      minMaxLesson,
+      sumCountLesson,
     ],
   },
   {
     title: "Ниво 2 — търсене",
     lessons: [
-      { title: "Линейно търсене (linear search)" },
-      { title: "Двоично търсене (binary search)" },
+      linearSearchLesson,
+      binarySearchLesson,
     ],
   },
   {
@@ -32,8 +32,8 @@ const LEVELS = [
     title: "Ниво 4 — по-бързи сортирания и рекурсия",
     lessons: [
       { title: "Рекурсия (recursion): факториел и Ханойски кули" },
-      { title: "Сортиране чрез сливане (merge sort)" },
-      { title: "Бързо сортиране (quick sort)" },
+      mergeSortLesson,
+      quickSortLesson,
     ],
   },
   {
