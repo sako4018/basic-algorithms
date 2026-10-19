@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-All lessons from `PLAN.md` are built (19): loop trace, minimum, maximum, sum, count, linear and binary search, bubble, selection, insertion, merge and quick sort, recursion (factorial, Hanoi), sort comparison, stack and queue, BFS, DFS, Dijkstra. Lessons that are not bars use a view in `js/views/` (see `docs/ARCHITECTURE.md`). Saved progress (`js/progress.js`) and the "Провери се" quiz (`js/quiz.js`) are built. The site is live on GitHub Pages (https://sako4018.github.io/basic-algorithms/, served from `master` / root, so every push to `master` updates it). Open work is in `docs/TASKS.md`. The look follows `TASTE.md`. `PLAN.md` (in Bulgarian) has the lesson format, the algorithm list per level and the remaining stages.
+The app has 12 lessons in 4 levels: loop trace, minimum, maximum, sum, count, linear and binary search, bubble, selection, insertion, merge and quick sort. Recursion, the sort comparison and the old level 5 (stack and queue, BFS, DFS, Dijkstra) were removed on 19.10.2026 at the user's request; they are still in git history (last commit with them: `3a582bf`). `js/player.js` still has the generic `view` hook (see `docs/ARCHITECTURE.md`), but no lesson uses it. Saved progress (`js/progress.js`) and the "Провери се" quiz (`js/quiz.js`) are built. The site is live on GitHub Pages (https://sako4018.github.io/basic-algorithms/, served from `master` / root, so every push to `master` updates it). Open work is in `docs/TASKS.md`. The look follows `TASTE.md`. `PLAN.md` (in Bulgarian) has the lesson format, the algorithm list per level and the remaining stages.
 
 ## What this is
 
