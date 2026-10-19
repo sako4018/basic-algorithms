@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-Stage 1 is done: home screen (`js/main.js`), shared player (`js/player.js`), styles (`css/style.css`) and the Bubble sort lesson. Stage 2 has Selection and Insertion sort; linear and binary search are still to do. The look follows `TASTE.md`. `PLAN.md` (in Bulgarian) has the lesson format, the algorithm list per level and the remaining stages.
+Stages 1 and 2 are done: home screen (`js/main.js`), shared player (`js/player.js`), styles (`css/style.css`) and nine lessons: min/max, sum and count, linear search, binary search, bubble, selection, insertion, merge and quick sort. Still to do: recursion, the sort comparison, and Level 5. The player has no separate color yet for "current range / discarded" (binary search, min/max and sum reuse `sorted` green for it; see `PLAN.md` → stage 3). The look follows `TASTE.md`. `PLAN.md` (in Bulgarian) has the lesson format, the algorithm list per level and the remaining stages.
 
 ## What this is
 
