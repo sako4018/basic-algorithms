@@ -7,7 +7,7 @@
   --border-strong: #3a3a3a;
   --text: #ededed;
   --text-muted: #8a8a8a;
-  --text-faint: #4d4d4d;
+  --text-faint: #767676;
   --button-bg: #ededed;
   --button-text: #000000;
   --bar: #3a3a3a;
@@ -34,7 +34,7 @@
   --border-strong: #c4c4c4;
   --text: #111111;
   --text-muted: #5c5c5c;
-  --text-faint: #a0a0a0;
+  --text-faint: #767676;
   --button-bg: #111111;
   --button-text: #ffffff;
   --bar: #c9c9c9;
@@ -156,7 +156,6 @@ input {
   cursor: default;
 }
 
-.text-button,
 .link-button {
   padding: 4px 0;
   border: none;
@@ -165,7 +164,6 @@ input {
   cursor: pointer;
 }
 
-.text-button:hover,
 .link-button:hover {
   color: var(--text);
 }
@@ -415,27 +413,42 @@ input:focus-visible {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 8px 24px;
+  gap: 8px;
+}
+
+.chip-button {
+  padding: 6px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: none;
+  color: var(--text-muted);
   font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.chip-button:hover:not(:disabled) {
+  border-color: var(--text);
+  color: var(--text);
+}
+
+.chip-button:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 
 .speed-label {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+  font-size: 0.9rem;
   color: var(--text-muted);
 }
 
 #speed {
-  width: 110px;
+  width: 140px;
   accent-color: var(--text-muted);
-}
-
-.hint {
-  margin: 0;
-  text-align: center;
-  font-size: 0.8rem;
-  color: var(--text-faint);
 }
 
 /* ---------- Code ---------- */
@@ -544,6 +557,7 @@ input:focus-visible {
 
 .vars-table td {
   font-weight: 600;
+  color: var(--text);
 }
 
 .vars-table tr:last-child th,
@@ -555,10 +569,16 @@ input:focus-visible {
   color: var(--text-faint);
 }
 
-/* Keyboard hint only makes sense where there is a mouse/keyboard. */
-@media (hover: none) {
-  .hint {
-    display: none;
+/* Fingers need bigger targets than a mouse pointer. */
+@media (pointer: coarse) {
+  .link-button {
+    min-height: 44px;
+    padding: 4px 8px;
+  }
+
+  .chip-button {
+    min-height: 44px;
+    padding: 6px 18px;
   }
 }
 

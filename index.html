@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Алгоритми стъпка по стъпка</title>
-  <link rel="stylesheet" href="css/style.css?v=20261019b">
+  <link rel="stylesheet" href="css/style.css?v=20261021b">
   <script>
     // Applies a saved light theme before the first paint, so it doesn't
     // flash black first. main.js handles the theme button.
@@ -45,21 +45,20 @@
           <p id="step-text" class="step-text" aria-live="polite"></p>
 
           <div class="controls">
-            <button id="prev-button" class="button secondary" type="button">← Назад</button>
+            <button id="prev-button" class="button secondary" type="button" title="Клавиш: ←" aria-keyshortcuts="ArrowLeft">← Назад</button>
             <span id="step-counter" class="step-counter"></span>
-            <button id="next-button" class="button" type="button">Напред →</button>
+            <button id="next-button" class="button" type="button" title="Клавиш: Space или →" aria-keyshortcuts="Space ArrowRight">Напред →</button>
           </div>
 
           <div class="controls-extra">
-            <button id="play-button" class="text-button" type="button">▶ Пусни</button>
-            <button id="random-button" class="text-button" type="button">Нов масив</button>
-            <button id="quiz-button" class="text-button" type="button">Провери се</button>
-            <label class="speed-label" for="speed">Скорост на размяната
-              <!-- Right = faster. Swap takes min + max - value ms, so 2000 = 0.8 s. -->
-              <input id="speed" type="range" min="300" max="2500" step="100" value="2000">
-            </label>
+            <button id="play-button" class="chip-button" type="button">▶ Пусни</button>
+            <button id="random-button" class="chip-button" type="button">↻ Нов масив</button>
+            <button id="quiz-button" class="chip-button" type="button">? Провери се</button>
           </div>
-          <p class="hint">Space или → напред, ← назад</p>
+          <label class="speed-label" for="speed">Скорост
+            <!-- Right = faster. Swap takes min + max - value ms, so 2000 = 0.8 s. -->
+            <input id="speed" type="range" min="300" max="2500" step="100" value="2000">
+          </label>
           <div id="quiz" class="quiz" hidden></div>
         </div>
 
@@ -74,21 +73,21 @@
     </section>
   </main>
 
-  <script src="js/lessons/loop-trace.js?v=20261019b"></script>
-  <script src="js/lessons/min.js?v=20261019b"></script>
-  <script src="js/lessons/max.js?v=20261019b"></script>
-  <script src="js/lessons/sum.js?v=20261019b"></script>
-  <script src="js/lessons/count.js?v=20261019b"></script>
-  <script src="js/lessons/linear-search.js?v=20261019b"></script>
-  <script src="js/lessons/binary-search.js?v=20261019b"></script>
-  <script src="js/lessons/bubble-sort.js?v=20261019b"></script>
-  <script src="js/lessons/selection-sort.js?v=20261019b"></script>
-  <script src="js/lessons/insertion-sort.js?v=20261019b"></script>
-  <script src="js/lessons/merge-sort.js?v=20261019b"></script>
-  <script src="js/lessons/quick-sort.js?v=20261019b"></script>
-  <script src="js/progress.js?v=20261019b"></script>
-  <script src="js/quiz.js?v=20261019b"></script>
-  <script src="js/player.js?v=20261019b"></script>
-  <script src="js/main.js?v=20261019b"></script>
+  <script src="js/lessons/loop-trace.js?v=20261021b"></script>
+  <script src="js/lessons/min.js?v=20261021b"></script>
+  <script src="js/lessons/max.js?v=20261021b"></script>
+  <script src="js/lessons/sum.js?v=20261021b"></script>
+  <script src="js/lessons/count.js?v=20261021b"></script>
+  <script src="js/lessons/linear-search.js?v=20261021b"></script>
+  <script src="js/lessons/binary-search.js?v=20261021b"></script>
+  <script src="js/lessons/bubble-sort.js?v=20261021b"></script>
+  <script src="js/lessons/selection-sort.js?v=20261021b"></script>
+  <script src="js/lessons/insertion-sort.js?v=20261021b"></script>
+  <script src="js/lessons/merge-sort.js?v=20261021b"></script>
+  <script src="js/lessons/quick-sort.js?v=20261021b"></script>
+  <script src="js/progress.js?v=20261021b"></script>
+  <script src="js/quiz.js?v=20261021b"></script>
+  <script src="js/player.js?v=20261021b"></script>
+  <script src="js/main.js?v=20261021b"></script>
 </body>
 </html>
